@@ -13,10 +13,10 @@ $("#postTextarea, #replyTextarea").keyup(event => {
     var value = textbox.val().trim();
 
     var isModal = textbox.parents(".modal").length == 1;
-    
+
     var submitButton = isModal ? $("#submitReplyButton") : $("#submitPostButton");
 
-    if(submitButton.length == 0) return alert("No submit button found");
+    if (submitButton.length == 0) return alert("No submit button found");
 
     if (value == "") {
         submitButton.prop("disabled", true);
@@ -38,17 +38,16 @@ $("#submitPostButton, #submitReplyButton").click(() => {
 
     if (isModal) {
         var id = button.data().id;
-        if(id == null) return alert("Button id is null");
+        if (id == null) return alert("Button id is null");
         data.replyTo = id;
     }
 
     $.post("/api/posts", data, postData => {
 
-        if(postData.replyTo) {
+        if (postData.replyTo) {
             emitNotification(postData.replyTo.postedBy)
             location.reload();
-        }
-        else {
+        } else {
             var html = createPostHtml(postData);
             $(".postsContainer").prepend(html);
             textbox.val("");
@@ -95,11 +94,11 @@ $("#deletePostButton").click((event) => {
         type: "DELETE",
         success: (data, status, xhr) => {
 
-            if(xhr.status != 202) {
+            if (xhr.status != 202) {
                 alert("could not delete post");
                 return;
             }
-            
+
             location.reload();
         }
     })
@@ -111,14 +110,14 @@ $("#pinPostButton").click((event) => {
     $.ajax({
         url: `/api/posts/${postId}`,
         type: "PUT",
-        data: { pinned: true },
+        data: {pinned: true},
         success: (data, status, xhr) => {
 
-            if(xhr.status != 204) {
+            if (xhr.status != 204) {
                 alert("could not delete post");
                 return;
             }
-            
+
             location.reload();
         }
     })
@@ -130,27 +129,27 @@ $("#unpinPostButton").click((event) => {
     $.ajax({
         url: `/api/posts/${postId}`,
         type: "PUT",
-        data: { pinned: false },
+        data: {pinned: false},
         success: (data, status, xhr) => {
 
-            if(xhr.status != 204) {
+            if (xhr.status != 204) {
                 alert("could not delete post");
                 return;
             }
-            
+
             location.reload();
         }
     })
 })
 
-$("#filePhoto").change(function(){    
-    if(this.files && this.files[0]) {
+$("#filePhoto").change(function () {
+    if (this.files && this.files[0]) {
         var reader = new FileReader();
         reader.onload = (e) => {
             var image = document.getElementById("imagePreview");
             image.src = e.target.result;
 
-            if(cropper !== undefined) {
+            if (cropper !== undefined) {
                 cropper.destroy();
             }
 
@@ -161,20 +160,19 @@ $("#filePhoto").change(function(){
 
         }
         reader.readAsDataURL(this.files[0]);
-    }
-    else {
+    } else {
         console.log("nope")
     }
 })
 
-$("#coverPhoto").change(function(){    
-    if(this.files && this.files[0]) {
+$("#coverPhoto").change(function () {
+    if (this.files && this.files[0]) {
         var reader = new FileReader();
         reader.onload = (e) => {
             var image = document.getElementById("coverPreview");
             image.src = e.target.result;
 
-            if(cropper !== undefined) {
+            if (cropper !== undefined) {
                 cropper.destroy();
             }
 
@@ -191,7 +189,7 @@ $("#coverPhoto").change(function(){
 $("#imageUploadButton").click(() => {
     var canvas = cropper.getCroppedCanvas();
 
-    if(canvas == null) {
+    if (canvas == null) {
         alert("Could not upload image. Make sure it is an image file.");
         return;
     }
@@ -214,7 +212,7 @@ $("#imageUploadButton").click(() => {
 $("#coverPhotoButton").click(() => {
     var canvas = cropper.getCroppedCanvas();
 
-    if(canvas == null) {
+    if (canvas == null) {
         alert("Could not upload image. Make sure it is an image file.");
         return;
     }
@@ -245,7 +243,7 @@ $("#userSearchTextbox").keydown((event) => {
         updateSelectedUsersHtml();
         $(".resultsContainer").html("");
 
-        if(selectedUsers.length == 0) {
+        if (selectedUsers.length == 0) {
             $("#createChatButton").prop("disabled", true);
         }
 
@@ -255,10 +253,9 @@ $("#userSearchTextbox").keydown((event) => {
     timer = setTimeout(() => {
         value = textbox.val().trim();
 
-        if(value == "") {
+        if (value == "") {
             $(".resultsContainer").html("");
-        }
-        else {
+        } else {
             searchUsers(value);
         }
     }, 1000)
@@ -268,9 +265,9 @@ $("#userSearchTextbox").keydown((event) => {
 $("#createChatButton").click(() => {
     var data = JSON.stringify(selectedUsers);
 
-    $.post("/api/chats", { users: data }, chat => {
+    $.post("/api/chats", {users: data}, chat => {
 
-        if(!chat || !chat._id) return alert("Invalid response from server.");
+        if (!chat || !chat._id) return alert("Invalid response from server.");
 
         window.location.href = `/messages/${chat._id}`;
     })
@@ -279,21 +276,20 @@ $("#createChatButton").click(() => {
 $(document).on("click", ".likeButton", (event) => {
     var button = $(event.target);
     var postId = getPostIdFromElement(button);
-    
-    if(postId === undefined) return;
+
+    if (postId === undefined) return;
 
     $.ajax({
         url: `/api/posts/${postId}/like`,
         type: "PUT",
         success: (postData) => {
-            
+
             button.find("span").text(postData.likes.length || "");
 
-            if(postData.likes.includes(userLoggedIn._id)) {
+            if (postData.likes.includes(userLoggedIn._id)) {
                 button.addClass("active");
                 emitNotification(postData.postedBy)
-            }
-            else {
+            } else {
                 button.removeClass("active");
             }
 
@@ -305,20 +301,19 @@ $(document).on("click", ".likeButton", (event) => {
 $(document).on("click", ".retweetButton", (event) => {
     var button = $(event.target);
     var postId = getPostIdFromElement(button);
-    
-    if(postId === undefined) return;
+
+    if (postId === undefined) return;
 
     $.ajax({
         url: `/api/posts/${postId}/retweet`,
         type: "POST",
-        success: (postData) => {            
+        success: (postData) => {
             button.find("span").text(postData.retweetUsers.length || "");
 
-            if(postData.retweetUsers.includes(userLoggedIn._id)) {
+            if (postData.retweetUsers.includes(userLoggedIn._id)) {
                 button.addClass("active");
                 emitNotification(postData.postedBy)
-            }
-            else {
+            } else {
                 button.removeClass("active");
             }
 
@@ -331,7 +326,7 @@ $(document).on("click", ".post", (event) => {
     var element = $(event.target);
     var postId = getPostIdFromElement(element);
 
-    if(postId !== undefined && !element.is("button")) {
+    if (postId !== undefined && !element.is("button")) {
         window.location.href = '/posts/' + postId;
     }
 });
@@ -339,31 +334,30 @@ $(document).on("click", ".post", (event) => {
 $(document).on("click", ".followButton", (e) => {
     var button = $(e.target);
     var userId = button.data().user;
-    
+
     $.ajax({
         url: `/api/users/${userId}/follow`,
         type: "PUT",
-        success: (data, status, xhr) => { 
-            
+        success: (data, status, xhr) => {
+
             if (xhr.status == 404) {
                 alert("user not found");
                 return;
             }
-            
+
             var difference = 1;
-            if(data.following && data.following.includes(userId)) {
+            if (data.following && data.following.includes(userId)) {
                 button.addClass("following");
                 button.text("Following");
                 emitNotification(userId);
-            }
-            else {
+            } else {
                 button.removeClass("following");
                 button.text("Follow");
                 difference = -1;
             }
-            
+
             var followersLabel = $("#followersValue");
-            if(followersLabel.length != 0) {
+            if (followersLabel.length != 0) {
                 var followersText = followersLabel.text();
                 followersText = parseInt(followersText);
                 followersLabel.text(followersText + difference);
@@ -388,22 +382,22 @@ function getPostIdFromElement(element) {
     var rootElement = isRoot == true ? element : element.closest(".post");
     var postId = rootElement.data().id;
 
-    if(postId === undefined) return alert("Post id undefined");
+    if (postId === undefined) return alert("Post id undefined");
 
     return postId;
 }
 
 function createPostHtml(postData, largeFont = false) {
 
-    if(postData == null) return alert("post object is null");
+    if (postData == null) return alert("post object is null");
 
     var isRetweet = postData.retweetData !== undefined;
     var retweetedBy = isRetweet ? postData.postedBy.username : null;
     postData = isRetweet ? postData.retweetData : postData;
-    
+
     var postedBy = postData.postedBy;
 
-    if(postedBy._id === undefined) {
+    if (postedBy._id === undefined) {
         return console.log("User object not populated");
     }
 
@@ -415,7 +409,7 @@ function createPostHtml(postData, largeFont = false) {
     var largeFontClass = largeFont ? "largeFont" : "";
 
     var retweetText = '';
-    if(isRetweet) {
+    if (isRetweet) {
         retweetText = `<span>
                         <i class='fas fa-retweet'></i>
                         Retweeted by <a href='/profile/${retweetedBy}'>@${retweetedBy}</a>    
@@ -423,12 +417,11 @@ function createPostHtml(postData, largeFont = false) {
     }
 
     var replyFlag = "";
-    if(postData.replyTo && postData.replyTo._id) {
-        
-        if(!postData.replyTo._id) {
+    if (postData.replyTo && postData.replyTo._id) {
+
+        if (!postData.replyTo._id) {
             return alert("Reply to is not populated");
-        }
-        else if(!postData.replyTo.postedBy._id) {
+        } else if (!postData.replyTo.postedBy._id) {
             return alert("Posted by is not populated");
         }
 
@@ -510,36 +503,26 @@ function timeDifference(current, previous) {
     var elapsed = current - previous;
 
     if (elapsed < msPerMinute) {
-        if(elapsed/1000 < 30) return "Just now";
-        
-        return Math.round(elapsed/1000) + ' seconds ago';   
-    }
+        if (elapsed / 1000 < 30) return "Just now";
 
-    else if (elapsed < msPerHour) {
-         return Math.round(elapsed/msPerMinute) + ' minutes ago';   
-    }
-
-    else if (elapsed < msPerDay ) {
-         return Math.round(elapsed/msPerHour ) + ' hours ago';   
-    }
-
-    else if (elapsed < msPerMonth) {
-        return Math.round(elapsed/msPerDay) + ' days ago';   
-    }
-
-    else if (elapsed < msPerYear) {
-        return Math.round(elapsed/msPerMonth) + ' months ago';   
-    }
-
-    else {
-        return Math.round(elapsed/msPerYear ) + ' years ago';   
+        return Math.round(elapsed / 1000) + ' seconds ago';
+    } else if (elapsed < msPerHour) {
+        return Math.round(elapsed / msPerMinute) + ' minutes ago';
+    } else if (elapsed < msPerDay) {
+        return Math.round(elapsed / msPerHour) + ' hours ago';
+    } else if (elapsed < msPerMonth) {
+        return Math.round(elapsed / msPerDay) + ' days ago';
+    } else if (elapsed < msPerYear) {
+        return Math.round(elapsed / msPerMonth) + ' months ago';
+    } else {
+        return Math.round(elapsed / msPerYear) + ' years ago';
     }
 }
 
 function outputPosts(results, container) {
     container.html("");
 
-    if(!Array.isArray(results)) {
+    if (!Array.isArray(results)) {
         results = [results];
     }
 
@@ -556,7 +539,7 @@ function outputPosts(results, container) {
 function outputPostsWithReplies(results, container) {
     container.html("");
 
-    if(results.replyTo !== undefined && results.replyTo._id !== undefined) {
+    if (results.replyTo !== undefined && results.replyTo._id !== undefined) {
         var html = createPostHtml(results.replyTo)
         container.append(html);
     }
@@ -578,7 +561,7 @@ function outputUsers(results, container) {
         container.append(html);
     });
 
-    if(results.length == 0) {
+    if (results.length == 0) {
         container.append("<span class='noResults'>No results found</span>")
     }
 }
@@ -612,7 +595,7 @@ function createUserHtml(userData, showFollowButton) {
 }
 
 function searchUsers(searchTerm) {
-    $.get("/api/users", { search: searchTerm }, results => {
+    $.get("/api/users", {search: searchTerm}, results => {
         outputSelectableUsers(results, $(".resultsContainer"));
     })
 }
@@ -621,8 +604,8 @@ function outputSelectableUsers(results, container) {
     container.html("");
 
     results.forEach(result => {
-        
-        if(result._id == userLoggedIn._id || selectedUsers.some(u => u._id == result._id)) {
+
+        if (result._id == userLoggedIn._id || selectedUsers.some(u => u._id == result._id)) {
             return;
         }
 
@@ -633,7 +616,7 @@ function outputSelectableUsers(results, container) {
         container.append(element);
     });
 
-    if(results.length == 0) {
+    if (results.length == 0) {
         container.append("<span class='noResults'>No results found</span>")
     }
 }
@@ -662,7 +645,7 @@ function updateSelectedUsersHtml() {
 function getChatName(chatData) {
     var chatName = chatData.chatName;
 
-    if(!chatName) {
+    if (!chatName) {
         var otherChatUsers = getOtherChatUsers(chatData.users);
         var namesArray = otherChatUsers.map(user => user.firstName + " " + user.lastName);
         chatName = namesArray.join(", ")
@@ -672,17 +655,16 @@ function getChatName(chatData) {
 }
 
 function getOtherChatUsers(users) {
-    if(users.length == 1) return users;
+    if (users.length == 1) return users;
 
     return users.filter(user => user._id != userLoggedIn._id);
 }
 
 function messageReceived(newMessage) {
-    if($(`[data-room="${newMessage.chat._id}"]`).length == 0) {
+    if ($(`[data-room="${newMessage.chat._id}"]`).length == 0) {
         // Show popup notification
         showMessagePopup(newMessage);
-    }
-    else {
+    } else {
         addChatMessageHtml(newMessage);
     }
 
@@ -690,7 +672,7 @@ function messageReceived(newMessage) {
 }
 
 function markNotificationsAsOpened(notificationId = null, callback = null) {
-    if(callback == null) callback = () => location.reload();
+    if (callback == null) callback = () => location.reload();
 
     var url = notificationId != null ? `/api/notifications/${notificationId}/markAsOpened` : `/api/notifications/markAsOpened`;
     $.ajax({
@@ -701,14 +683,13 @@ function markNotificationsAsOpened(notificationId = null, callback = null) {
 }
 
 function refreshMessagesBadge() {
-    $.get("/api/chats", { unreadOnly: true }, (data) => {
-        
+    $.get("/api/chats", {unreadOnly: true}, (data) => {
+
         var numResults = data.length;
 
-        if(numResults > 0) {
+        if (numResults > 0) {
             $("#messagesBadge").text(numResults).addClass("active");
-        }
-        else {
+        } else {
             $("#messagesBadge").text("").removeClass("active");
         }
 
@@ -716,14 +697,13 @@ function refreshMessagesBadge() {
 }
 
 function refreshNotificationsBadge() {
-    $.get("/api/notifications", { unreadOnly: true }, (data) => {
-        
+    $.get("/api/notifications", {unreadOnly: true}, (data) => {
+
         var numResults = data.length;
 
-        if(numResults > 0) {
+        if (numResults > 0) {
             $("#notificationBadge").text(numResults).addClass("active");
-        }
-        else {
+        } else {
             $("#notificationBadge").text("").removeClass("active");
         }
 
@@ -740,7 +720,7 @@ function showNotificationPopup(data) {
 
 function showMessagePopup(data) {
 
-    if(!data.chat.latestMessage._id) {
+    if (!data.chat.latestMessage._id) {
         data.chat.latestMessage = data;
     }
 
@@ -757,7 +737,7 @@ function outputNotificationList(notifications, container) {
         container.append(html);
     })
 
-    if(notifications.length == 0) {
+    if (notifications.length == 0) {
         container.append("<span class='noResults'>Nothing to show.</span>");
     }
 }
@@ -782,40 +762,36 @@ function getNotificationText(notification) {
 
     var userFrom = notification.userFrom;
 
-    if(!userFrom.firstName || !userFrom.lastName) {
+    if (!userFrom.firstName || !userFrom.lastName) {
         return alert("user from data not populated");
     }
 
     var userFromName = `${userFrom.firstName} ${userFrom.lastName}`;
-    
+
     var text;
 
-    if(notification.notificationType == "retweet") {
+    if (notification.notificationType == "retweet") {
         text = `${userFromName} retweeted one of your posts`;
-    }
-    else if(notification.notificationType == "postLike") {
+    } else if (notification.notificationType == "postLike") {
         text = `${userFromName} liked one of your posts`;
-    }
-    else if(notification.notificationType == "reply") {
+    } else if (notification.notificationType == "reply") {
         text = `${userFromName} replied to one of your posts`;
-    }
-    else if(notification.notificationType == "follow") {
+    } else if (notification.notificationType == "follow") {
         text = `${userFromName} followed you`;
     }
 
     return `<span class='ellipsis'>${text}</span>`;
 }
 
-function getNotificationUrl(notification) { 
+function getNotificationUrl(notification) {
     var url = "#";
 
-    if(notification.notificationType == "retweet" || 
-        notification.notificationType == "postLike" || 
+    if (notification.notificationType == "retweet" ||
+        notification.notificationType == "postLike" ||
         notification.notificationType == "reply") {
-            
+
         url = `/posts/${notification.entityId}`;
-    }
-    else if(notification.notificationType == "follow") {
+    } else if (notification.notificationType == "follow") {
         url = `/profile/${notification.entityId}`;
     }
 
@@ -828,7 +804,7 @@ function createChatHtml(chatData) {
     var latestMessage = getLatestMessage(chatData.latestMessage);
 
     var activeClass = !chatData.latestMessage || chatData.latestMessage.readBy.includes(userLoggedIn._id) ? "" : "active";
-    
+
     return `<a href='/messages/${chatData._id}' class='resultListItem ${activeClass}'>
                 ${image}
                 <div class='resultsDetailsContainer ellipsis'>
@@ -839,7 +815,7 @@ function createChatHtml(chatData) {
 }
 
 function getLatestMessage(latestMessage) {
-    if(latestMessage != null) {
+    if (latestMessage != null) {
         var sender = latestMessage.sender;
         return `${sender.firstName} ${sender.lastName}: ${latestMessage.content}`;
     }
@@ -853,7 +829,7 @@ function getChatImageElements(chatData) {
     var groupChatClass = "";
     var chatImage = getUserChatImageElement(otherChatUsers[0]);
 
-    if(otherChatUsers.length > 1) {
+    if (otherChatUsers.length > 1) {
         groupChatClass = "groupChatImage";
         chatImage += getUserChatImageElement(otherChatUsers[1]);
     }
@@ -862,7 +838,7 @@ function getChatImageElements(chatData) {
 }
 
 function getUserChatImageElement(user) {
-    if(!user || !user.profilePic) {
+    if (!user || !user.profilePic) {
         return alert("User passed into function is invalid");
     }
 

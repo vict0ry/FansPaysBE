@@ -8,59 +8,57 @@ const User = require('../schemas/UserSchema');
 app.set("view engine", "pug");
 app.set("views", "views");
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 
 router.get("/", (req, res, next) => {
-
+    // res.status(200).send(results);
     res.status(200).render("register");
 })
 
 router.post("/", async (req, res, next) => {
+    console.log('test')
+    console.log(req)
+    const firstName = req.body.firstName.trim();
+    const lastName = req.body.lastName.trim();
+    const username = req.body.username.trim();
+    const email = req.body.email.trim();
+    const password = req.body.password;
 
-    var firstName = req.body.firstName.trim();
-    var lastName = req.body.lastName.trim();
-    var username = req.body.username.trim();
-    var email = req.body.email.trim();
-    var password = req.body.password;
+    const payload = req.body;
 
-    var payload = req.body;
-
-    if(firstName && lastName && username && email && password) {
-        var user = await User.findOne({
+    if (firstName && lastName && username && email && password) {
+        const user = await User.findOne({
             $or: [
-                { username: username },
-                { email: email }
+                {username: username},
+                {email: email}
             ]
         })
-        .catch((error) => {
-            console.log(error);
-            payload.errorMessage = "Something went wrong.";
-            res.status(200).render("register", payload);
-        });
+            .catch((error) => {
+                console.log(error);
+                payload.errorMessage = "Something went wrong.";
+                res.status(200).render("register", payload);
+            });
 
-        if(user == null) {
+        if (user == null) {
             // No user found
-            var data = req.body;
+            const data = req.body;
             data.password = await bcrypt.hash(password, 10);
 
             User.create(data)
-            .then((user) => {
-                req.session.user = user;
-                return res.redirect("/");
-            })
-        }
-        else {
+                .then((user) => {
+                    req.session.user = user;
+                    return res.redirect("/");
+                })
+        } else {
             // User found
-            if (email == user.email) {
+            if (email === user.email) {
                 payload.errorMessage = "Email already in use.";
-            }
-            else {
+            } else {
                 payload.errorMessage = "Username already in use.";
             }
             res.status(200).render("register", payload);
         }
-    }
-    else {
+    } else {
         payload.errorMessage = "Make sure each field has a valid value.";
         res.status(200).render("register", payload);
     }

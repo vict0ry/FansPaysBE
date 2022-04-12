@@ -7,10 +7,9 @@ $("#searchBox").keydown((event) => {
     timer = setTimeout(() => {
         value = textbox.val().trim();
 
-        if(value == "") {
+        if (value == "") {
             $(".resultsContainer").html("");
-        }
-        else {
+        } else {
             search(value, searchType);
         }
     }, 1000)
@@ -20,14 +19,12 @@ $("#searchBox").keydown((event) => {
 function search(searchTerm, searchType) {
     var url = searchType == "users" ? "/api/users" : "/api/posts"
 
-    $.get(url, { search: searchTerm }, (results) => {
-        
+    $.get(url, {search: searchTerm}, (results) => {
 
 
-        if(searchType == "users") {
+        if (searchType == "users") {
             outputUsers(results, $(".resultsContainer"));
-        }
-        else {
+        } else {
             outputPosts(results, $(".resultsContainer"))
         }
 

@@ -8,12 +8,12 @@ const mongoose = require("./database");
 const session = require("express-session");
 
 const server = app.listen(port, () => console.log("Server listening on port " + port));
-const io = require("socket.io")(server, { pingTimeout: 60000 });
+const io = require("socket.io")(server, {pingTimeout: 60000});
 
 app.set("view engine", "pug");
 app.set("views", "views");
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(session({
@@ -39,7 +39,9 @@ const usersApiRoute = require('./routes/api/users');
 const chatsApiRoute = require('./routes/api/chats');
 const messagesApiRoute = require('./routes/api/messages');
 const notificationsApiRoute = require('./routes/api/notifications');
+const cors = require("cors");
 
+app.use(cors())
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);
 app.use("/logout", logoutRoute);
@@ -82,11 +84,11 @@ io.on("connection", socket => {
     socket.on("new message", newMessage => {
         var chat = newMessage.chat;
 
-        if(!chat.users) return console.log("Chat.users not defined");
+        if (!chat.users) return console.log("Chat.users not defined");
 
         chat.users.forEach(user => {
-            
-            if(user._id == newMessage.sender._id) return;
+
+            if (user._id == newMessage.sender._id) return;
             socket.in(user._id).emit("message received", newMessage);
         })
     });

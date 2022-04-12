@@ -10,7 +10,7 @@ $(document).ready(() => {
     $.get(`/api/chats/${chatId}`, (data) => $("#chatName").text(getChatName(data)))
 
     $.get(`/api/chats/${chatId}/messages`, (data) => {
-        
+
         var messages = [];
         var lastSenderId = "";
 
@@ -33,16 +33,15 @@ $(document).ready(() => {
 
 $("#chatNameButton").click(() => {
     var name = $("#chatNameTextbox").val().trim();
-    
+
     $.ajax({
         url: "/api/chats/" + chatId,
         type: "PUT",
-        data: { chatName: name },
+        data: {chatName: name},
         success: (data, status, xhr) => {
-            if(xhr.status != 204) {
+            if (xhr.status != 204) {
                 alert("could not update");
-            }
-            else {
+            } else {
                 location.reload();
             }
         }
@@ -57,16 +56,16 @@ $(".inputTextbox").keydown((event) => {
 
     updateTyping();
 
-    if(event.which === 13) {
+    if (event.which === 13) {
         messageSubmitted();
         return false;
     }
 })
 
 function updateTyping() {
-    if(!connected) return;
+    if (!connected) return;
 
-    if(!typing) {
+    if (!typing) {
         typing = true;
         socket.emit("typing", chatId);
     }
@@ -78,7 +77,7 @@ function updateTyping() {
         var timeNow = new Date().getTime();
         var timeDiff = timeNow - lastTypingTime;
 
-        if(timeDiff >= timerLength && typing) {
+        if (timeDiff >= timerLength && typing) {
             socket.emit("stop typing", chatId);
             typing = false;
         }
@@ -92,7 +91,7 @@ function addMessagesHtmlToPage(html) {
 function messageSubmitted() {
     var content = $(".inputTextbox").val().trim();
 
-    if(content != "") {
+    if (content != "") {
         sendMessage(content);
         $(".inputTextbox").val("");
         socket.emit("stop typing", chatId);
@@ -101,18 +100,18 @@ function messageSubmitted() {
 }
 
 function sendMessage(content) {
-    
-    $.post("/api/messages", { content: content, chatId: chatId }, (data, status, xhr) => {
 
-        if(xhr.status != 201) {
+    $.post("/api/messages", {content: content, chatId: chatId}, (data, status, xhr) => {
+
+        if (xhr.status != 201) {
             alert("Could not send message");
             $(".inputTextbox").val(content);
             return;
         }
-        
+
         addChatMessageHtml(data);
 
-        if(connected) {
+        if (connected) {
             socket.emit("new message", data);
         }
 
@@ -120,7 +119,7 @@ function sendMessage(content) {
 }
 
 function addChatMessageHtml(message) {
-    if(!message || !message._id) {
+    if (!message || !message._id) {
         alert("Message is not valid");
         return;
     }
@@ -146,22 +145,22 @@ function createMessageHtml(message, nextMessage, lastSenderId) {
     var liClassName = isMine ? "mine" : "theirs";
 
     var nameElement = "";
-    if(isFirst) {
+    if (isFirst) {
         liClassName += " first";
 
-        if(!isMine) {
+        if (!isMine) {
             nameElement = `<span class='senderName'>${senderName}</span>`;
         }
     }
 
     var profileImage = "";
-    if(isLast) {
+    if (isLast) {
         liClassName += " last";
         profileImage = `<img src='${sender.profilePic}'>`;
     }
 
     var imageContainer = "";
-    if(!isMine) {
+    if (!isMine) {
         imageContainer = `<div class='imageContainer'>
                                 ${profileImage}
                             </div>`;
@@ -182,10 +181,9 @@ function scrollToBottom(animated) {
     var container = $(".chatMessages");
     var scrollHeight = container[0].scrollHeight;
 
-    if(animated) {
-        container.animate({ scrollTop: scrollHeight }, "slow");
-    }
-    else {
+    if (animated) {
+        container.animate({scrollTop: scrollHeight}, "slow");
+    } else {
         container.scrollTop(scrollHeight);
     }
 }

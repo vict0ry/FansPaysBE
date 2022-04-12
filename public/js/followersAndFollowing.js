@@ -1,9 +1,8 @@
 $(document).ready(() => {
 
-    if(selectedTab === "followers") {
+    if (selectedTab === "followers") {
         loadFollowers();
-    }
-    else {
+    } else {
         loadFollowing();
     }
 });
