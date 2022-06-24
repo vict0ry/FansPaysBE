@@ -6,25 +6,27 @@ const User = require('../../schemas/UserSchema');
 const Post = require('../../schemas/PostSchema');
 const Chat = require('../../schemas/ChatSchema');
 const Message = require('../../schemas/MessageSchema');
+const jwt = require("jsonwebtoken");
 
 app.use(bodyParser.urlencoded({extended: false}));
 
 router.post("/", async (req, res, next) => {
+    const user = await jwt.decode(req.headers.authorization, 'secretkey');
     if (!req.body.users) {
         console.log("Users param not sent with request");
         return res.sendStatus(400);
     }
 
-    var users = JSON.parse(req.body.users);
+    const users = req.body.users;
 
-    if (users.length == 0) {
+    if (users.length === 0) {
         console.log("Users array is empty");
         return res.sendStatus(400);
     }
 
-    users.push(req.session.user);
+    users.push(user);
 
-    var chatData = {
+    const chatData = {
         users: users,
         isGroupChat: true
     };
@@ -38,14 +40,15 @@ router.post("/", async (req, res, next) => {
 })
 
 router.get("/", async (req, res, next) => {
-    Chat.find({users: {$elemMatch: {$eq: req.session.user._id}}})
+    const user = await jwt.decode(req.headers.authorization, 'secretkey');
+    Chat.find({users: {$elemMatch: {$eq: user._id}}})
         .populate("users")
         .populate("latestMessage")
         .sort({updatedAt: -1})
         .then(async results => {
 
-            if (req.query.unreadOnly && req.query.unreadOnly == "true") {
-                results = results.filter(r => r.latestMessage && !r.latestMessage.readBy.includes(req.session.user._id));
+            if (req.query.unreadOnly && req.query.unreadOnly === "true") {
+                results = results.filter(r => r.latestMessage && !r.latestMessage.readBy.includes(user._id));
             }
 
             results = await User.populate(results, {path: "latestMessage.sender"});
@@ -58,7 +61,8 @@ router.get("/", async (req, res, next) => {
 })
 
 router.get("/:chatId", async (req, res, next) => {
-    Chat.findOne({_id: req.params.chatId, users: {$elemMatch: {$eq: req.session.user._id}}})
+    const user = await jwt.decode(req.headers.authorization, 'secretkey');
+    Chat.findOne({_id: req.params.chatId, users: {$elemMatch: {$eq: user._id}}})
         .populate("users")
         .then(results => res.status(200).send(results))
         .catch(error => {
@@ -88,8 +92,8 @@ router.get("/:chatId/messages", async (req, res, next) => {
 })
 
 router.put("/:chatId/messages/markAsRead", async (req, res, next) => {
-
-    Message.updateMany({chat: req.params.chatId}, {$addToSet: {readBy: req.session.user._id}})
+    const user = await jwt.decode(req.headers.authorization, 'secretkey');
+    Message.updateMany({chat: req.params.chatId}, {$addToSet: {readBy: user._id}})
         .then(() => res.sendStatus(204))
         .catch(error => {
             console.log(error);

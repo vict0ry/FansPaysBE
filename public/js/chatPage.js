@@ -91,7 +91,7 @@ function addMessagesHtmlToPage(html) {
 function messageSubmitted() {
     var content = $(".inputTextbox").val().trim();
 
-    if (content != "") {
+    if (content !== "") {
         sendMessage(content);
         $(".inputTextbox").val("");
         socket.emit("stop typing", chatId);
@@ -138,10 +138,10 @@ function createMessageHtml(message, nextMessage, lastSenderId) {
     var currentSenderId = sender._id;
     var nextSenderId = nextMessage != null ? nextMessage.sender._id : "";
 
-    var isFirst = lastSenderId != currentSenderId;
-    var isLast = nextSenderId != currentSenderId;
+    var isFirst = lastSenderId !== currentSenderId;
+    var isLast = nextSenderId !== currentSenderId;
 
-    var isMine = message.sender._id == userLoggedIn._id;
+    var isMine = message.sender._id === userLoggedIn._id;
     var liClassName = isMine ? "mine" : "theirs";
 
     var nameElement = "";

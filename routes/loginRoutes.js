@@ -4,49 +4,52 @@ const router = express.Router();
 const bodyParser = require("body-parser")
 const bcrypt = require("bcrypt");
 const User = require('../schemas/UserSchema');
+const jwt = require("jsonwebtoken");
 
 app.set("view engine", "pug");
 app.set("views", "views");
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 
 router.get("/", (req, res, next) => {
-    
+
     res.status(200).render("login");
 })
 
 router.post("/", async (req, res, next) => {
 
-    var payload = req.body;
+    const payload = req.body;
+    console.log('here')
 
-    if(req.body.logUsername && req.body.logPassword) {
-        var user = await User.findOne({
+    if (req.body.login && req.body.password) {
+        const user = await User.findOne({
             $or: [
-                { username: req.body.logUsername },
-                { email: req.body.logUsername }
+                {username: req.body.login},
+                {email: req.body.login}
             ]
         })
-        .catch((error) => {
-            console.log(error);
-            payload.errorMessage = "Something went wrong.";
-            res.status(200).render("login", payload);
-        });
-        
-        if(user != null) {
-            var result = await bcrypt.compare(req.body.logPassword, user.password);
+            .catch((error) => {
+                console.log(error);
+                payload.errorMessage = "Something went wrong.";
+                res.status(500).send(payload.errorMessage);
+            });
 
-            if(result === true) {
+        if (user !== null) {
+            const result = await bcrypt.compare(req.body.password, user.password);
+
+            if (result) {
+                const token = jwt.sign(user.toJSON(), 'secretkey');
                 req.session.user = user;
-                return res.redirect("/");
+                return res.send(token);
             }
         }
 
         payload.errorMessage = "Login credentials incorrect.";
-        return res.status(200).render("login", payload);
+        return res.status(404).send(payload.errorMessage);
     }
 
     payload.errorMessage = "Make sure each field has a valid value.";
-    res.status(200).render("login");
+    res.status(200).send(payload.errorMessage);
 })
 
 module.exports = router;

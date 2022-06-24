@@ -5,15 +5,21 @@ const bodyParser = require("body-parser")
 const User = require('../../schemas/UserSchema');
 const Post = require('../../schemas/PostSchema');
 const Notification = require('../../schemas/NotificationSchema');
+const Comment = require('../../schemas/CommentSchema');
+const jwt = require("jsonwebtoken");
+const multer = require("multer");
+const upload = multer({dest: "uploads/"});
+const fs = require("fs");
+const path = require("path");
 
 app.use(bodyParser.urlencoded({extended: false}));
 
 router.get("/", async (req, res, next) => {
-
-    var searchObj = req.query;
+    const user = await jwt.decode(req.headers.authorization, 'secretkey');
+    const searchObj = req.query;
 
     if (searchObj.isReply !== undefined) {
-        const isReply = searchObj.isReply == "true";
+        const isReply = searchObj.isReply === "true";
         searchObj.replyTo = {$exists: isReply};
         delete searchObj.isReply;
     }
@@ -24,63 +30,105 @@ router.get("/", async (req, res, next) => {
     }
 
     if (searchObj.followingOnly !== undefined) {
-        const followingOnly = searchObj.followingOnly == "true";
+        const followingOnly = searchObj.followingOnly === "true";
 
         if (followingOnly) {
-            var objectIds = [];
+            const objectIds = [];
 
-            if (!req.session.user.following) {
-                req.session.user.following = [];
+            if (!user.following) {
+                user.following = [];
             }
 
-            req.session.user.following.forEach(user => {
+            user.following.forEach(user => {
                 objectIds.push(user);
             })
 
-            objectIds.push(req.session.user._id);
+            objectIds.push(user._id);
             searchObj.postedBy = {$in: objectIds};
         }
 
         delete searchObj.followingOnly;
     }
 
-    var results = await getPosts(searchObj);
+    const results = await getPosts(searchObj);
     res.status(200).send(results);
 })
 
-router.get("/:id", async (req, res, next) => {
-
-    var postId = req.params.id;
-
-    var postData = await getPosts({_id: postId});
-    postData = postData[0];
-
-    var results = {
-        postData: postData
-    }
-
-    if (postData.replyTo !== undefined) {
-        results.replyTo = postData.replyTo;
-    }
-
-    results.replies = await getPosts({replyTo: postId});
-
-    res.status(200).send(results);
+router.get('/:id', async (req, res, next) => {
+    const id = req.params.id;
+    const posts = await Post.find({postedBy: id}).populate("postedBy").populate({
+        path: 'comments',
+        populate: {
+            path: 'sender',
+        }
+    }).populate({
+        path: 'comments',
+        populate: {
+            path: 'comments',
+            populate: {
+                path: 'sender',
+            }
+        }
+    })
+    res.status(200).send(posts);
 })
 
-router.post("/", async (req, res, next) => {
+// router.get("/:id", async (req, res, next) => {
+//
+//     const postId = req.params.id;
+//
+//     let postData = await getPosts({_id: postId});
+//     postData = postData[0];
+//
+//     const results = {
+//         postData: postData
+//     };
+//
+//     if (postData.replyTo !== undefined) {
+//         results.replyTo = postData.replyTo;
+//     }
+//
+//     results.replies = await getPosts({replyTo: postId});
+//
+//     res.status(200).send(results);
+// })
+
+router.post("/", upload.array("images[]"), async (req, res, next) => {
+    const user = await jwt.decode(req.headers.authorization, 'secretkey');
     if (!req.body.content) {
         console.log("Content param not sent with request");
         return res.sendStatus(400);
     }
+    let filesPath = [];
+    if (req.files.length) {
+        req.files.forEach(file => {
+            console.log(file);
+            const ending = file.originalname.split('.')[1];
+            console.log('ending: ', ending);
+            const filePath = `/uploads/images/${file.filename}.` + ending;
+            const tempPath = file.path;
+            const targetPath = path.join(__dirname, `../../${filePath}`);
+            filesPath.push(filePath);
+            fs.rename(tempPath, targetPath, async error => {
+                if (error != null) {
+                    console.log(error);
+                    return res.sendStatus(400);
+                }
+            })
+        })
 
-    var postData = {
-        content: req.body.content,
-        postedBy: req.session.user
     }
+
+    const postData = {
+        content: req.body.content,
+        postedBy: user
+    };
 
     if (req.body.replyTo) {
         postData.replyTo = req.body.replyTo;
+    }
+    if (filesPath.length) {
+        postData.pictures = filesPath;
     }
 
 
@@ -102,28 +150,26 @@ router.post("/", async (req, res, next) => {
 })
 
 router.put("/:id/like", async (req, res, next) => {
+    const user = await jwt.decode(req.headers.authorization, 'secretkey');
+    const userId = user._id;
 
-    var postId = req.params.id;
-    var userId = req.session.user._id;
+    const postId = req.params.id;
+    const foundPost = await Post.findOne({_id: postId});
+    const isLiked = foundPost.likes.includes(userId);
 
-    var isLiked = req.session.user.likes && req.session.user.likes.includes(postId);
+    const option = isLiked ? "$pull" : "$addToSet";
 
-    var option = isLiked ? "$pull" : "$addToSet";
-
-    // Insert user like
-    req.session.user = await User.findByIdAndUpdate(userId, {[option]: {likes: postId}}, {new: true})
+    await User.findByIdAndUpdate(userId, {[option]: {likes: postId}}, {new: true})
         .catch(error => {
             console.log(error);
             res.sendStatus(400);
         })
 
-    // Insert post like
-    var post = await Post.findByIdAndUpdate(postId, {[option]: {likes: userId}}, {new: true})
+    const post = await Post.findByIdAndUpdate(postId, {[option]: {likes: user._id}}, {new: true})
         .catch(error => {
             console.log(error);
             res.sendStatus(400);
-        })
-
+        });
     if (!isLiked) {
         await Notification.insertNotification(post.postedBy, userId, "postLike", post._id);
     }
@@ -131,17 +177,47 @@ router.put("/:id/like", async (req, res, next) => {
 
     res.status(200).send(post)
 })
-
-router.post("/:id/retweet", async (req, res, next) => {
-    var postId = req.params.id;
-    var userId = req.session.user._id;
-
-    // Try and delete retweet
-    var deletedPost = await Post.findOneAndDelete({postedBy: userId, retweetData: postId})
+router.put("/:id/comment", async (req, res, next) => {
+    const user = await jwt.decode(req.headers.authorization, 'secretkey');
+    const userId = user._id;
+    const postId = req.params.id;
+    const comment = req.body.comment;
+    const commentSchema = await Comment.create({
+        sender: userId, comment: comment, post: postId
+    });
+    const post = await Post.findByIdAndUpdate({_id: postId}, {['$addToSet']: {comments: commentSchema._id}})
         .catch(error => {
             console.log(error);
             res.sendStatus(400);
+        });
+    const commentPopulated = await commentSchema.populate('sender').execPopulate();
+    console.log(commentPopulated);
+    res.status(200).send(commentPopulated)
+})
+
+router.delete('/:id', async (req, res, next) => {
+    const user = await jwt.decode(req.headers.authorization, 'secretkey');
+    const postId = req.params.id;
+    await Post.findOneAndDelete({postedBy: user._id, _id: postId})
+        .then(result => {
+            res.status(200).send(result);
         })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(400);
+        });
+});
+
+router.post("/:id/retweet", async (req, res, next) => {
+    const postId = req.params.id;
+    const userId = req.session.user._id;
+
+    // Try and delete retweet
+    const deletedPost = await Post.findOneAndDelete({postedBy: userId, retweetData: postId})
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(400);
+        });
 
     var option = deletedPost != null ? "$pull" : "$addToSet";
 
@@ -155,19 +231,17 @@ router.post("/:id/retweet", async (req, res, next) => {
             })
     }
 
-    // Insert user like
     req.session.user = await User.findByIdAndUpdate(userId, {[option]: {retweets: repost._id}}, {new: true})
         .catch(error => {
             console.log(error);
             res.sendStatus(400);
         })
 
-    // Insert post like
-    var post = await Post.findByIdAndUpdate(postId, {[option]: {retweetUsers: userId}}, {new: true})
+    const post = await Post.findByIdAndUpdate(postId, {[option]: {retweetUsers: userId}}, {new: true})
         .catch(error => {
             console.log(error);
             res.sendStatus(400);
-        })
+        });
 
     if (!deletedPost) {
         await Notification.insertNotification(post.postedBy, userId, "retweet", post._id);
@@ -177,14 +251,6 @@ router.post("/:id/retweet", async (req, res, next) => {
     res.status(200).send(post)
 })
 
-router.delete("/:id", (req, res, next) => {
-    Post.findByIdAndDelete(req.params.id)
-        .then(() => res.sendStatus(202))
-        .catch(error => {
-            console.log(error);
-            res.sendStatus(400);
-        })
-})
 
 router.put("/:id", async (req, res, next) => {
 
@@ -205,15 +271,15 @@ router.put("/:id", async (req, res, next) => {
 })
 
 async function getPosts(filter) {
-    var results = await Post.find(filter)
+    let results = await Post.find(filter)
         .populate("postedBy")
         .populate("retweetData")
         .populate("replyTo")
         .sort({"createdAt": -1})
-        .catch(error => console.log(error))
+        .catch(error => console.log(error));
 
     results = await User.populate(results, {path: "replyTo.postedBy"})
-    return await User.populate(results, {path: "retweetData.postedBy"});
+    return User.populate(results, {path: "retweetData.postedBy"});
 }
 
 module.exports = router;

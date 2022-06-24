@@ -605,18 +605,20 @@ function outputSelectableUsers(results, container) {
 
     results.forEach(result => {
 
-        if (result._id == userLoggedIn._id || selectedUsers.some(u => u._id == result._id)) {
+        if (result._id === userLoggedIn._id || selectedUsers.some(u => u._id === result._id)) {
             return;
         }
 
-        var html = createUserHtml(result, false);
-        var element = $(html);
-        element.click(() => userSelected(result))
+        const html = createUserHtml(result, false);
+        const element = $(html);
+        element.click(() => {
+            userSelected(result);
+        })
 
         container.append(element);
     });
 
-    if (results.length == 0) {
+    if (results.length === 0) {
         container.append("<span class='noResults'>No results found</span>")
     }
 }
@@ -630,7 +632,7 @@ function userSelected(user) {
 }
 
 function updateSelectedUsersHtml() {
-    var elements = [];
+    const elements = [];
 
     selectedUsers.forEach(user => {
         var name = user.firstName + " " + user.lastName;

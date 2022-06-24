@@ -4,11 +4,14 @@ const router = express.Router();
 const bodyParser = require("body-parser")
 const bcrypt = require("bcrypt");
 const User = require('../schemas/UserSchema');
+const jwt = require("jsonwebtoken");
 
 app.set("view engine", "pug");
 app.set("views", "views");
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
+const jsonParser = bodyParser.json()
+
 
 router.get("/", (req, res, next) => {
     // res.status(200).send(results);
@@ -16,8 +19,6 @@ router.get("/", (req, res, next) => {
 })
 
 router.post("/", async (req, res, next) => {
-    console.log('test')
-    console.log(req)
     const firstName = req.body.firstName.trim();
     const lastName = req.body.lastName.trim();
     const username = req.body.username.trim();
@@ -44,11 +45,10 @@ router.post("/", async (req, res, next) => {
             const data = req.body;
             data.password = await bcrypt.hash(password, 10);
 
-            User.create(data)
-                .then((user) => {
-                    req.session.user = user;
-                    return res.redirect("/");
-                })
+            const user = await User.create(data);
+            const token = jwt.sign(user.toJSON(), 'secretkey');
+            res.status(200).send(token);
+
         } else {
             // User found
             if (email === user.email) {
@@ -56,11 +56,11 @@ router.post("/", async (req, res, next) => {
             } else {
                 payload.errorMessage = "Username already in use.";
             }
-            res.status(200).render("register", payload);
+            res.status(500).send({errorMessage: payload.errorMessage});
         }
     } else {
         payload.errorMessage = "Make sure each field has a valid value.";
-        res.status(200).render("register", payload);
+        res.status(500).send({errorMessage: payload.errorMessage});
     }
 })
 
