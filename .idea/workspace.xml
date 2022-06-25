@@ -23,53 +23,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/routes/api/comments.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/api/credit.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/api/shop.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schemas/CommentSchema.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schemas/CreditSchema.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schemas/ShopSchema.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schemas/UserMetadataSchema.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/middleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/chatPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/chatPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/clientSocket.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/clientSocket.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/common.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/common.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/inboxPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/inboxPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/search.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/search.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api/chats.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/chats.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/messages.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/messages.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/notifications.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/posts.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/posts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/users.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/loginRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/loginRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/messagesRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/messagesRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/profileRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/profileRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/registerRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/registerRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/searchRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/searchRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/NotificationSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/NotificationSchema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/PostSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/PostSchema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/UserSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/UserSchema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/48d14bb1e04844aec5af535ead0d8033" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/21acbbcdf35d86bc5f0f59a65b8f41f0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/24937eb78008cf450f8abb421de9c559.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/251255b411a7de4e199efb6a61d225ee.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/4b0ea620e07354fb99d3583a1ba86a27.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/67582a5c155cdbe35bd88bc3fd560c85.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/69814d065be35a3b85f8dc53858e22be.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/93e695e5e728cc0bc41b66998d60811d.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/992866b6f5ef02e210da6315eac8f361.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/a0d44e372d5193d19ddb4a421de9b0b1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/a4eb2afadc901b0b705fb8f3f9789601.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/accc93f3b99c26ea89c9d8921e6a91b9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/ef11d0b7b9e5ab8a13aea7e5f77abfe7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/f30d11d387646067fa4674dc5d8c3295.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/f8461bec5e102a18a0090f34331d1af1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/fce36da2b3ae32f39a0e18dd34f6a89b.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/mixins/mixins.pug" beforeDir="false" afterPath="$PROJECT_DIR$/views/mixins/mixins.pug" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,6 +37,17 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="271xdAFA56VWWITdKBjUG72AXtF" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -86,8 +55,9 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../placena-seznamka-redux" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.1.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
@@ -120,6 +90,7 @@
       <workItem from="1655400627168" duration="717000" />
       <workItem from="1655977007357" duration="1234000" />
       <workItem from="1656065250991" duration="1470000" />
+      <workItem from="1656183802363" duration="1615000" />
     </task>
     <servers />
   </component>
@@ -136,32 +107,5 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="647" y="321" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1651615105288">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="647" y="321" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1651615105288" />
-    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1655023168200">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1655023168200" />
-    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1651783453161">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1651783453161" />
-    <state x="959" y="216" width="587" height="624" key="find.popup" timestamp="1655053214170">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="959" y="216" width="587" height="624" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1655053214170" />
-    <state x="616" y="240" width="672" height="677" key="run.anything.popup" timestamp="1652623808149">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="616" y="240" width="672" height="677" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1652623808149" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1655053216993">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1655053216993" />
   </component>
 </project>

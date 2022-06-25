@@ -57,13 +57,13 @@ app.use("/messages", middleware.requireLogin, messagesRoute);
 app.use("/notifications", middleware.requireLogin, notificationsRoute);
 app.use("/api/shop", middleware.requireLogin, shopApiRoute);
 
-app.use("/api/posts", postsApiRoute);
-app.use("/api/users", usersApiRoute);
-app.use("/api/credit", creditApiRoute);
-app.use("/api/chats", chatsApiRoute);
-app.use("/api/messages", messagesApiRoute);
-app.use("/api/notifications", notificationsApiRoute);
-app.use("/api/comments", commentsApiRoute);
+app.use("/api/posts", middleware.requireLogin, postsApiRoute);
+app.use("/api/users", middleware.requireLogin, usersApiRoute);
+app.use("/api/credit", middleware.requireLogin, creditApiRoute);
+app.use("/api/chats", middleware.requireLogin, chatsApiRoute);
+app.use("/api/messages", middleware.requireLogin, messagesApiRoute);
+app.use("/api/notifications", middleware.requireLogin, notificationsApiRoute);
+app.use("/api/comments", middleware.requireLogin, commentsApiRoute);
 
 app.get("/", middleware.requireLogin, (req, res, next) => {
 

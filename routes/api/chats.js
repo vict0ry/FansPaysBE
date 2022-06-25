@@ -41,7 +41,7 @@ router.post("/", async (req, res, next) => {
 
 router.get("/", async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
-    Chat.find({users: {$elemMatch: {$eq: user._id}}})
+    Chat.find({users: {$elemMatch: {$eq: user?._id}}})
         .populate("users")
         .populate("latestMessage")
         .sort({updatedAt: -1})

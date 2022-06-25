@@ -19,7 +19,7 @@ router.get("/", (req, res, next) => {
 router.post("/", async (req, res, next) => {
 
     const payload = req.body;
-    console.log('here')
+    console.log('here 1')
 
     if (req.body.login && req.body.password) {
         const user = await User.findOne({
