@@ -129,19 +129,16 @@ router.post("/profilePicture", upload.single("croppedImage"), async (req, res, n
     const filePath = `/uploads/images/${req.file.filename}.png`;
     const tempPath = req.file.path;
     const targetPath = path.join(__dirname, `../../${filePath}`);
-    console.log(filePath);
-    const foundUser = await User.findByIdAndUpdate(user._id, {
-        profilePic: filePath
-    })
-
-    fs.rename(tempPath, targetPath, async error => {
+    await fs.rename(tempPath, targetPath, async error => {
         if (error != null) {
             console.log(error);
             return res.sendStatus(400);
+        } else {
+            const foundUser = await User.findByIdAndUpdate(user._id, {
+                profilePic: filePath
+            });
+            res.status(200).send(foundUser);
         }
-
-        // await User.findByIdAndUpdate(req.session.user._id, {profilePic: filePath}, {new: true});
-        res.sendStatus(200).send(foundUser);
     })
 
 });
