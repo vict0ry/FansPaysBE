@@ -22,7 +22,6 @@ router.get("/", (req, res, next) => {
 
 router.get("/:username", async (req, res, next) => {
     const payload = await getPayload(req.params.username, req.session.user);
-    console.log('fuuuck')
     res.status(200).send(payload);
 })
 
