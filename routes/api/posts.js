@@ -16,7 +16,9 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 router.get("/", async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
+    const foundUser = await User.findOne({username: user.username});
     const searchObj = req.query;
+
 
     if (searchObj.isReply !== undefined) {
         const isReply = searchObj.isReply === "true";
@@ -29,34 +31,43 @@ router.get("/", async (req, res, next) => {
         delete searchObj.search;
     }
 
+
     if (searchObj.followingOnly !== undefined) {
         const followingOnly = searchObj.followingOnly === "true";
 
         if (followingOnly) {
             const objectIds = [];
 
-            if (!user.following) {
-                user.following = [];
+            if (!foundUser.following) {
+                foundUser.following = [];
             }
 
-            user.following.forEach(user => {
+            foundUser.following.forEach(user => {
                 objectIds.push(user);
             })
 
             objectIds.push(user._id);
             searchObj.postedBy = {$in: objectIds};
         }
+        console.log('following only true!!!');
 
         delete searchObj.followingOnly;
     }
+    console.log('searchobj : ', searchObj);
+    console.log('hhhh')
 
     const results = await getPosts(searchObj);
+    console.log('result: ', results)
     res.status(200).send(results);
 })
 
-router.get('/:id', async (req, res, next) => {
-    const id = req.params.id;
-    const posts = await Post.find({postedBy: id}).populate("postedBy").populate({
+router.get('/:username', async (req, res, next) => {
+    const username = req.params.username;
+    const user = await User.findOne({username: username});
+    const id = user?._id;
+    const posts = await Post.find({postedBy: id})
+        .populate("postedBy")
+        .populate({
         path: 'comments',
         populate: {
             path: 'sender',
@@ -70,6 +81,7 @@ router.get('/:id', async (req, res, next) => {
             }
         }
     })
+    console.log('poooosts is : ', posts);
     res.status(200).send(posts);
 })
 
@@ -95,6 +107,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.post("/", upload.array("images[]"), async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
+    console.log('post /');
     if (!req.body.content) {
         console.log("Content param not sent with request");
         return res.sendStatus(400);
@@ -152,6 +165,7 @@ router.post("/", upload.array("images[]"), async (req, res, next) => {
 router.put("/:id/like", async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
     const userId = user._id;
+    console.log('/:id/like');
 
     const postId = req.params.id;
     const foundPost = await Post.findOne({_id: postId});
@@ -179,6 +193,7 @@ router.put("/:id/like", async (req, res, next) => {
 })
 router.put("/:id/comment", async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
+    console.log('/id/comment');
     const userId = user._id;
     const postId = req.params.id;
     const comment = req.body.comment;
@@ -197,6 +212,7 @@ router.put("/:id/comment", async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
+    console.log('/:id');
     const postId = req.params.id;
     await Post.findOneAndDelete({postedBy: user._id, _id: postId})
         .then(result => {
@@ -277,6 +293,8 @@ async function getPosts(filter) {
         .populate("replyTo")
         .sort({"createdAt": -1})
         .catch(error => console.log(error));
+
+    console.log('getposts')
 
     results = await User.populate(results, {path: "replyTo.postedBy"})
     return User.populate(results, {path: "retweetData.postedBy"});
