@@ -11,14 +11,15 @@ const UserSchema = new Schema({
     username: {type: String, required: true, trim: true, unique: true},
     email: {type: String, required: true, trim: true, unique: true},
     password: {type: String, required: true},
-    profilePic: {type: String, default: "/images/profilePic.jpeg"},
+    profilePic: {type: String, default: "/noavatar.png"},
     coverPhoto: {type: String},
     likes: [{type: Schema.Types.ObjectId, ref: 'Post'}],
     comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
     credit: [{type: Schema.Types.ObjectId, ref: 'Credit'}],
     retweets: [{type: Schema.Types.ObjectId, ref: 'Post'}],
     following: [{type: Schema.Types.ObjectId, ref: 'User'}],
-    followers: [{type: Schema.Types.ObjectId, ref: 'User'}]
+    followers: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    role: {type: String, required: true},
 }, {timestamps: true});
 
 const User = mongoose.model('User', UserSchema);

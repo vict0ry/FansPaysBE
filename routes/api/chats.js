@@ -54,6 +54,7 @@ router.get("/", async (req, res, next) => {
                 results = results.filter(r => r.latestMessage && !r.latestMessage.readBy.includes(user._id));
             }
 
+
             results = await User.populate(results, {path: "latestMessage.sender"});
             return res.status(200).send(results);
         })
