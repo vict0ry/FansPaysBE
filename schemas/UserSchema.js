@@ -19,7 +19,7 @@ const UserSchema = new Schema({
     retweets: [{type: Schema.Types.ObjectId, ref: 'Post'}],
     following: [{type: Schema.Types.ObjectId, ref: 'User'}],
     followers: [{type: Schema.Types.ObjectId, ref: 'User'}],
-    role: {type: String, required: true},
+    role: {type: String, default: "user"},
 }, {timestamps: true});
 
 const User = mongoose.model('User', UserSchema);
