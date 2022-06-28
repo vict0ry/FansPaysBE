@@ -43,7 +43,7 @@ router.post("/", async (req, res, next) => {
         if (user == null) {
             // No user found
             const data = req.body;
-            data.password = await bcrypt.hash(password, 10);
+            data.password = await bcrypt.hash(password, 10);g
 
             const user = await User.create(data);
             const token = jwt.sign(user.toJSON(), 'secretkey');

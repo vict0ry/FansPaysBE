@@ -17,20 +17,27 @@ router.post("/", async (req, res, next) => {
     })
     res.send(credit);
 })
+router.post('/addremove', async (req,res,next) => {
+    const user = await jwt.decode(req.headers.authorization, 'secretkey');
+    const userRole = user.role;
+    if (userRole !== 'admin') {
+        await Credit.create({
+            description: req.body.description || 'admin action',
+            amount: req.body.amount,
+            recipient: req.body.recipient,
+            sender: user._id,
+        })
+    } else {
+        return res.status(403).send('Not admin');
+    }
+})
 router.get('/', async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
     const incomeAndOutcome = await Credit.find({$or: [{recipient: user._id}, {sender: user._id}]}).populate("recipient").populate("sender")
-    const income = incomeAndOutcome.filter(s => {
-        return s.recipient._id.toString().trim() === user._id.toString().trim();
-    }).map(i => i.amount).reduce((a, b) => a + b, 0)
-    const outcome = incomeAndOutcome.filter(s => {
-        return s.sender._id.toString().trim() === user._id.toString().trim();
-    }).map(i => i.amount).reduce((a, b) => a + b, 0)
+    const total = incomeAndOutcome.map(i => i.amount).reduce((a,b) => { return a+b}, 0)
     return res.send({
         transactions: incomeAndOutcome,
-        total: income - outcome,
-        incomeTransactions: income,
-        outcomeTransactions: outcome,
+        total
     });
 })
 // router.get('/transactions', async (req, res, next) => {
