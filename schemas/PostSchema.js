@@ -12,6 +12,7 @@ const PostSchema = new Schema({
     retweetUsers: [{type: Schema.Types.ObjectId, ref: 'User'}],
     retweetData: {type: Schema.Types.ObjectId, ref: 'Post'},
     replyTo: {type: Schema.Types.ObjectId, ref: 'Post'},
+    price: {type: Number, trim: true, default: 0},
 }, {timestamps: true});
 
 const Post = mongoose.model('Post', PostSchema);

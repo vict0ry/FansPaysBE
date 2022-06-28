@@ -291,6 +291,23 @@ async function getPosts(filter) {
         .populate("postedBy")
         .populate("retweetData")
         .populate("replyTo")
+        .populate("sender")
+        .populate("comments")
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'sender',
+            }
+        })
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'comments',
+                populate: {
+                    path: 'sender',
+                }
+            }
+        })
         .sort({"createdAt": -1})
         .catch(error => console.log(error));
 

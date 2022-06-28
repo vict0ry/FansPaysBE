@@ -24,8 +24,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="fixed following users">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/credit.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/credit.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/registerRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/registerRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api/posts.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/posts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/PostSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/PostSchema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/UserSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/UserSchema.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +90,8 @@
       <workItem from="1655400627168" duration="717000" />
       <workItem from="1655977007357" duration="1234000" />
       <workItem from="1656065250991" duration="1470000" />
-      <workItem from="1656183802363" duration="32766000" />
+      <workItem from="1656183802363" duration="34303000" />
+      <workItem from="1656420953455" duration="1199000" />
     </task>
     <task id="LOCAL-00001" summary="fixed following users">
       <created>1656341407689</created>
