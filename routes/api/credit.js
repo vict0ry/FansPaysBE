@@ -20,7 +20,7 @@ router.post("/", async (req, res, next) => {
 router.post('/addremove', async (req,res,next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
     const userRole = user.role;
-    if (userRole !== 'admin') {
+    if (userRole === 'admin') {
         await Credit.create({
             description: req.body.description || 'admin action',
             amount: req.body.amount,

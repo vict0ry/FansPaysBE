@@ -13,6 +13,7 @@ const UserSchema = new Schema({
     password: {type: String, required: true},
     profilePic: {type: String, default: "/noavatar.png"},
     coverPhoto: {type: String},
+    subscribtionPrice: {type: Number, default: 0, trim: true},
     likes: [{type: Schema.Types.ObjectId, ref: 'Post'}],
     comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
     credit: [{type: Schema.Types.ObjectId, ref: 'Credit'}],

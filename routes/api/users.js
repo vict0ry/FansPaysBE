@@ -11,6 +11,7 @@ const Post = require('../../schemas/PostSchema');
 const Notification = require('../../schemas/NotificationSchema');
 const jwt = require("jsonwebtoken");
 const {requireLogin} = require("../../middleware");
+const Credit = require("../../schemas/CreditSchema");
 
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -52,10 +53,44 @@ router.put("/:userId/follow", async (req, res, next) => {
     const userId = req.params.userId;
 
     const user = await User.findById(userId);
+    const subscriberCredits = await Credit.find({$or: [{recipient: _id}, {sender: _id}]});
+    const subscriberCreditsTotal = subscriberCredits.map(i => i.amount).reduce((a,b) => { return a+b}, 0);
+    const sufficientBalance = (Number(subscriberCreditsTotal) > Number(user.subscribtionPrice));
+
+    console.log('subscriberCreditsTotal', subscriberCreditsTotal);
+    console.log('user.subscriptionPrice', user.subscribtionPrice);
+    console.log('sufficientBalance', subscriberCreditsTotal);
+
+
+
 
     if (user == null) return res.sendStatus(404);
 
     const isFollowing = user.followers && user.followers.includes(_id);
+
+    if (!isFollowing) {
+        if (!sufficientBalance) {
+            return res.status(200).send('not enough balance');
+        }
+        console.log('recipient: ', userId);
+        console.log('sender: ', userData._id);
+
+        const addedCredit = await Credit.create({
+            description: 'New subscriber',
+            amount: user.subscribtionPrice,
+            recipient: userId,
+            sender: userData._id,
+        })
+        const creditRemoval = await Credit.create({
+            description: 'Subscription payment',
+            amount: user.subscribtionPrice * -1,
+            recipient: userData._id,
+            sender: userId
+        })
+        console.log('credit changed')
+    }
+
+
     const option = isFollowing ? "$pull" : "$addToSet";
 
     const updatedUser = await User.findByIdAndUpdate(_id, {[option]: {following: userId}}, {new: true})
@@ -112,6 +147,16 @@ router.put("/updateprofile", async (req, res, next) => {
         birthDate: req.body.birthDate
     }, {new: true});
     res.status(200).send(foundUser)
+});
+
+router.put('/subscribtionPrice', async (req,res,next) => {
+    const user = await jwt.decode(req.headers.authorization, 'secretkey');
+    console.log('newprice : ', req.body.price);
+    const foundUser = await User.findByIdAndUpdate(user._id, {
+        subscribtionPrice: req.body.price
+    }).then(i => {
+        return res.send(200);
+    })
 });
 
 router.put('/contacts', async (req,res, next) => {
