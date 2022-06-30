@@ -21,7 +21,7 @@ const UserSchema = new Schema({
     following: [{type: Schema.Types.ObjectId, ref: 'User'}],
     followers: [{type: Schema.Types.ObjectId, ref: 'User'}],
     isBlocked: {type: Boolean, default: false},
-    role: {type: String, default: "user"},
+    role: {type: String, default: "user", enum: ['user', 'admin', 'moderator']},
 }, {timestamps: true});
 
 const User = mongoose.model('User', UserSchema);
