@@ -57,11 +57,6 @@ router.put("/:userId/follow", async (req, res, next) => {
     const subscriberCreditsTotal = subscriberCredits.map(i => i.amount).reduce((a,b) => { return a+b}, 0);
     const sufficientBalance = (Number(subscriberCreditsTotal) > Number(user.subscribtionPrice));
 
-    console.log('subscriberCreditsTotal', subscriberCreditsTotal);
-    console.log('user.subscriptionPrice', user.subscribtionPrice);
-    console.log('sufficientBalance', subscriberCreditsTotal);
-
-
 
 
     if (user == null) return res.sendStatus(404);
@@ -72,8 +67,6 @@ router.put("/:userId/follow", async (req, res, next) => {
         if (!sufficientBalance) {
             return res.status(200).send('not enough balance');
         }
-        console.log('recipient: ', userId);
-        console.log('sender: ', userData._id);
 
         const addedCredit = await Credit.create({
             description: 'New subscriber',
