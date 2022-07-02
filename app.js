@@ -42,6 +42,8 @@ const messagesApiRoute = require('./routes/api/messages');
 const notificationsApiRoute = require('./routes/api/notifications');
 const commentsApiRoute = require('./routes/api/comments');
 const creditApiRoute = require('./routes/api/credit');
+const wishApiRoute = require('./routes/api/wish');
+
 const cors = require("cors");
 
 app.use(cors())
@@ -56,6 +58,8 @@ app.use("/search", middleware.requireLogin, searchRoute);
 app.use("/messages", middleware.requireLogin, messagesRoute);
 app.use("/notifications", middleware.requireLogin, notificationsRoute);
 app.use("/api/shop", middleware.requireLogin, shopApiRoute);
+app.use("/api/wish", middleware.requireLogin, wishApiRoute);
+
 
 app.use("/api/posts", middleware.requireLogin, postsApiRoute);
 app.use("/api/users", middleware.requireLogin, usersApiRoute);
