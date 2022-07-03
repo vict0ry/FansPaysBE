@@ -6,7 +6,7 @@ const CreditSchema = new Schema({
     description: {type: String, trim: true},
     amount: {type: Number, required: true},
     category: {type: String, 'trim': true,
-        enum: ['POST', 'MESSENGER', 'SHOP', 'SUBSCRIPTION'],
+        enum: ['POST', 'MESSENGER', 'SHOP', 'SUBSCRIPTION', 'ADMIN_ACTION'],
         required: true},
     recipient: {type: Schema.Types.ObjectId, ref: 'User'},
     sender: {type: Schema.Types.ObjectId, ref: 'User'},

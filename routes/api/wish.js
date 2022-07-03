@@ -6,9 +6,12 @@ const jwt = require("jsonwebtoken");
 const Wish = require("../../schemas/WishSchema");
 router.get('/:id', async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
-    return Wish.find({owner: req.params.id}).then(data => {
-        return res.send(data);
-    })
+    if (req.params.id !== 'undefined') {
+        return Wish.find({owner: req.params.id}).then(data => {
+            return res.send(data);
+        })
+    }
+    return res.status(404);
 });
 router.delete('/:id', async (req,res,next) => {
     await Wish.findByIdAndDelete(req.params.id);

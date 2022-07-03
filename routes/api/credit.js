@@ -24,9 +24,11 @@ router.post('/addremove', async (req,res,next) => {
         await Credit.create({
             description: req.body.description || 'admin action',
             amount: req.body.amount,
+            category: 'ADMIN_ACTION',
             recipient: req.body.recipient,
             sender: user._id,
-        })
+        });
+        return req.status(200);
     } else {
         return res.status(403).send('Not admin');
     }
@@ -34,16 +36,13 @@ router.post('/addremove', async (req,res,next) => {
 router.get('/', async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
     const incomeAndOutcome = await Credit.find({$or: [{recipient: user._id}, {sender: user._id}]}).populate("recipient").populate("sender")
-    const total = incomeAndOutcome.map(i => i.amount).reduce((a,b) => { return a+b}, 0)
+    const incomeCredits = await Credit.find({recipient: user._id});
+    const outcomeCredits = await Credit.find({sender: user._id});
+    const total = incomeCredits.map(i => i.amount).reduce((a,b) => a+b,0) - outcomeCredits.map(i => i.amount).reduce((a,b) => a+b,0);
+
     return res.send({
         transactions: incomeAndOutcome,
         total
     });
 })
-// router.get('/transactions', async (req, res, next) => {
-//     const user = await jwt.decode(req.headers.authorization, 'secretkey');
-//     await Credit.find({sender: user._id}).then(data => {
-//         return res.send(data);
-//     })
-// })
 module.exports = router;

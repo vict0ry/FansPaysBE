@@ -47,20 +47,17 @@ router.get("/", async (req, res, next) => {
 router.put("/:userId/follow", async (req, res, next) => {
 
     const userData = jwt.decode(req.headers.authorization, 'secretkey')
-    console.log('userdata: ', userData);
     const {_id} = userData;
 
     const userId = req.params.userId;
 
     const user = await User.findById(userId);
-    const subscriberCredits = await Credit.find({$or: [{recipient: _id}, {sender: _id}]});
-    const subscriberCreditsTotal = subscriberCredits.map(i => i.amount).reduce((a,b) => { return a+b}, 0);
-    const sufficientBalance = (Number(subscriberCreditsTotal) > Number(user.subscribtionPrice));
-
-
+    const incomeCredits = await Credit.find({recipient: _id});
+    const outcomeCredits = await Credit.find({sender: _id});
+    const total = incomeCredits.map(i => i.amount).reduce((a,b) => a+b, 0) - outcomeCredits.map(i => i.amount).reduce((a,b) => a+b, 0);
+    const sufficientBalance = (Number(total) > Number(user.subscribtionPrice));
 
     if (user == null) return res.sendStatus(404);
-
     const isFollowing = user.followers && user.followers.includes(_id);
 
     if (!isFollowing) {
@@ -82,7 +79,6 @@ router.put("/:userId/follow", async (req, res, next) => {
             recipient: userData._id,
             sender: userId
         })
-        console.log('credit changed')
     }
 
 
@@ -146,7 +142,6 @@ router.put("/updateprofile", async (req, res, next) => {
 
 router.put('/subscribtionPrice', async (req,res,next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
-    console.log('newprice : ', req.body.price);
     const foundUser = await User.findByIdAndUpdate(user._id, {
         subscribtionPrice: req.body.price
     }).then(i => {
@@ -154,18 +149,12 @@ router.put('/subscribtionPrice', async (req,res,next) => {
     })
 });
 
-router.put('/contacts', async (req,res, next) => {
-    const user = await jwt.decode(req.headers.authorization, 'secretkey');
-
-})
-
 router.post("/profilePicture", upload.single("croppedImage"), async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
     if (!req.file) {
         console.log("No file uploaded with ajax request.");
         return res.sendStatus(400);
     }
-
     const filePath = `/uploads/images/${req.file.filename}.png`;
     const tempPath = req.file.path;
     const targetPath = path.join(__dirname, `../../${filePath}`);
@@ -179,28 +168,6 @@ router.post("/profilePicture", upload.single("croppedImage"), async (req, res, n
             });
             res.status(200).send(foundUser);
         }
-    })
-
-});
-
-router.post("/coverPhoto", upload.single("croppedImage"), async (req, res, next) => {
-    if (!req.file) {
-        console.log("No file uploaded with ajax request.");
-        return res.sendStatus(400);
-    }
-
-    const filePath = `/uploads/images/${req.file.filename}.png`;
-    const tempPath = req.file.path;
-    const targetPath = path.join(__dirname, `../../${filePath}`);
-
-    fs.rename(tempPath, targetPath, async error => {
-        if (error != null) {
-            console.log(error);
-            return res.sendStatus(400);
-        }
-
-        req.session.user = await User.findByIdAndUpdate(req.session.user._id, {coverPhoto: filePath}, {new: true});
-        res.sendStatus(204);
     })
 
 });

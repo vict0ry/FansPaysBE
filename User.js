@@ -15,4 +15,7 @@ class UserClass {
         const sufficientBalance = (Number(subscriberCreditsTotal) > Number(this.user.subscribtionPrice));
         return
     }
+    async getSpending() {
+        const subscriberCredits = await Credit.find({sender: _id});
+    }
 }
