@@ -8,12 +8,9 @@ class SubscriptionHelper {
     now = moment();
     subscription;
     isActive;
+    daysLeft;
     async create() {
-        console.log('gothere...');
-        console.log('this.following', this.following);
-        console.log('this.follower', this.follower);
         this.subscription = await Subscription.findOne({ $and: [{following: this.following}, {follower: this.follower}  ]});
-        console.log('this.subscription: ', this.subscription);
         if (this.subscription) {
             await this.checkIfIsActive();
         } else {
@@ -27,15 +24,12 @@ class SubscriptionHelper {
 
     }
     async activeByPackage(days) {
-        const purchase_date = moment(this.subscription.createdAt, "YYYY-MM-DD");
-        const difference = this.now.diff(purchase_date, 'days');
-        console.log('difference: ', difference);
-        console.log('days : ', days);
-        return difference <= days;
+        this.daysLeft = this.checkHowMuchDaysLeft(days);
+        return this.daysLeft >= 0;
     }
-    async daysLeft() {
-        const purchase_date = moment(this.subscription.createdAt, "YYYY-MM-DD");
-        return this.now.diff(purchase_date, 'days');
+    checkHowMuchDaysLeft(days) {
+        const purchase_date = moment(this.subscription.createdAt, "YYYY-MM-DD").add(days, 'days');
+        return this.now.diff(purchase_date, 'days') * -1;
     }
     async checkIfIsActive() {
         if (this.subscription) {
