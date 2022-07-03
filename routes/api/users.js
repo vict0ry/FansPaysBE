@@ -72,11 +72,13 @@ router.put("/:userId/follow", async (req, res, next) => {
             description: 'New subscriber',
             amount: user.subscribtionPrice,
             recipient: userId,
+            category: 'SUBSCRIPTION',
             sender: userData._id,
         })
         const creditRemoval = await Credit.create({
             description: 'Subscription payment',
             amount: user.subscribtionPrice * -1,
+            category: 'SUBSCRIPTION',
             recipient: userData._id,
             sender: userId
         })
