@@ -28,7 +28,7 @@ router.post('/addremove', async (req,res,next) => {
             recipient: req.body.recipient,
             sender: user._id,
         });
-        return req.status(200);
+        return res.status(200).send('OK');
     } else {
         return res.status(403).send('Not admin');
     }
