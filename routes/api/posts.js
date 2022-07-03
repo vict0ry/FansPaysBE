@@ -78,7 +78,6 @@ router.get('/:username', async (req, res, next) => {
         }
     }).lean();
     const subscription = await new SubscriptionHelper(loggedUser._id, id).create();
-    console.log('days left :', subscription.daysLeft());
     if (!subscription.isActive) {
         posts = posts.map(post => {
             const {pictures, comments, ...omitedPost} = post;

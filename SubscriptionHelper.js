@@ -23,7 +23,7 @@ class SubscriptionHelper {
         this.following = following;
 
     }
-    async activeByPackage(days) {
+    activeByPackage(days) {
         this.daysLeft = this.checkHowMuchDaysLeft(days);
         return this.daysLeft >= 0;
     }
@@ -33,7 +33,6 @@ class SubscriptionHelper {
     }
     async checkIfIsActive() {
         if (this.subscription) {
-            console.log('current sub renewal: ', this.subscription.renewal);
             switch(this.subscription.renewal) {
                 case 'ONEMONTH':
                     return this.isActive = await this.activeByPackage(30)
