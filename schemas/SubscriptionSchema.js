@@ -4,8 +4,12 @@ const Schema = mongoose.Schema;
 
 const SubscriptionSchema = new Schema({
     price: {type: Number, required: true},
-    subscribedTo: {type: Schema.Types.ObjectId, ref: 'User'},
+    following: {type: Schema.Types.ObjectId, ref: 'User'},
+    follower: {type: Schema.Types.ObjectId, ref: 'User'},
+    cancelled: {type: Boolean, default: false},
+    renewal: {type: String, trim: true, enum: ['ONEMONTH', 'THREEMONTH', 'SIXMONTH', 'ONEYEAR'],
+    }
 }, {timestamps: true});
 
-const Shop = mongoose.model('Subscription', SubscriptionSchema);
-module.exports = Shop;
+const Subscription = mongoose.model('Subscription', SubscriptionSchema);
+module.exports = Subscription;

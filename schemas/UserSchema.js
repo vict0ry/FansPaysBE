@@ -10,7 +10,7 @@ const UserSchema = new Schema({
     birthDate: {type: String, required: false, trim: true},
     username: {type: String, required: true, trim: true, unique: true},
     email: {type: String, required: true, trim: true, unique: true},
-    password: {type: String, required: true},
+    password: {type: String, required: true, select: false},
     profilePic: {type: String, default: "/noavatar.png"},
     coverPhoto: {type: String},
     subscribtionPrice: {type: Number, default: 0, trim: true},

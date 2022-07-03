@@ -12,6 +12,9 @@ const Notification = require('../../schemas/NotificationSchema');
 const jwt = require("jsonwebtoken");
 const {requireLogin} = require("../../middleware");
 const Credit = require("../../schemas/CreditSchema");
+const Subscription = require("../../schemas/SubscriptionSchema");
+const moment = require("moment");
+const {SubscriptionHelper} = require("../../SubscriptionHelper");
 
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -59,8 +62,10 @@ router.put("/:userId/follow", async (req, res, next) => {
 
     if (user == null) return res.sendStatus(404);
     const isFollowing = user.followers && user.followers.includes(_id);
-
-    if (!isFollowing) {
+    const subscription = await new SubscriptionHelper(userData._id, userId).create();
+    if (subscription.isActive) {
+        return res.status(200).send('You already subscribed');
+    } else {
         if (!sufficientBalance) {
             return res.status(200).send('not enough balance');
         }
@@ -79,6 +84,12 @@ router.put("/:userId/follow", async (req, res, next) => {
             recipient: userData._id,
             sender: userId
         })
+        await Subscription.create({
+            price: user.subscribtionPrice,
+            following: userId,
+            follower: userData._id,
+            renewal: 'ONEMONTH'
+            });
     }
 
 

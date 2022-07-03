@@ -11,6 +11,11 @@ const multer = require("multer");
 const upload = multer({dest: "uploads/"});
 const fs = require("fs");
 const path = require("path");
+const Subscription = require("../../schemas/SubscriptionSchema");
+const moment = require("moment");
+const {omit} = require("mongoose/lib/utils");
+const {SubscriptionHelper} = require("../../SubscriptionHelper");
+
 
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -18,13 +23,6 @@ router.get("/", async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
     const foundUser = await User.findOne({username: user.username});
     const searchObj = req.query;
-
-
-    if (searchObj.isReply !== undefined) {
-        const isReply = searchObj.isReply === "true";
-        searchObj.replyTo = {$exists: isReply};
-        delete searchObj.isReply;
-    }
 
     if (searchObj.search !== undefined) {
         searchObj.content = {$regex: searchObj.search, $options: "i"};
@@ -53,9 +51,6 @@ router.get("/", async (req, res, next) => {
 
         delete searchObj.followingOnly;
     }
-    console.log('searchobj : ', searchObj);
-    console.log('hhhh')
-
     const results = await getPosts(searchObj);
     console.log('result: ', results)
     res.status(200).send(results);
@@ -63,9 +58,10 @@ router.get("/", async (req, res, next) => {
 
 router.get('/:username', async (req, res, next) => {
     const username = req.params.username;
+    const loggedUser = await jwt.decode(req.headers.authorization, 'secretkey');
     const user = await User.findOne({username: username});
     const id = user?._id;
-    const posts = await Post.find({postedBy: id})
+    let posts = await Post.find({postedBy: id})
         .populate("postedBy")
         .populate({
         path: 'comments',
@@ -80,8 +76,17 @@ router.get('/:username', async (req, res, next) => {
                 path: 'sender',
             }
         }
-    })
-    console.log('poooosts is : ', posts);
+    }).lean();
+    const subscription = await new SubscriptionHelper(loggedUser._id, id).create();
+    console.log('also here :', subscription.isActive);
+    if (!subscription.isActive) {
+        posts = posts.map(post => {
+            const {pictures, comments, ...omitedPost} = post;
+            omitedPost['not_subscribed'] = true;
+            return omitedPost;
+        })
+    }
+
     res.status(200).send(posts);
 })
 

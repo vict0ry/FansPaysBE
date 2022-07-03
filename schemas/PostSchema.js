@@ -9,7 +9,6 @@ const PostSchema = new Schema({
     pictures: [{type: String}],
     likes: [{type: Schema.Types.ObjectId, ref: 'User'}],
     comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
-    retweetUsers: [{type: Schema.Types.ObjectId, ref: 'User'}],
     retweetData: {type: Schema.Types.ObjectId, ref: 'Post'},
     replyTo: {type: Schema.Types.ObjectId, ref: 'Post'},
     price: {type: Number, trim: true, default: 0},
