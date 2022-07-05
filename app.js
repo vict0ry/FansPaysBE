@@ -44,6 +44,7 @@ const commentsApiRoute = require('./routes/api/comments');
 const creditApiRoute = require('./routes/api/credit');
 const wishApiRoute = require('./routes/api/wish');
 
+
 const cors = require("cors");
 
 app.use(cors())
@@ -68,6 +69,39 @@ app.use("/api/chats", middleware.requireLogin, chatsApiRoute);
 app.use("/api/messages", middleware.requireLogin, messagesApiRoute);
 app.use("/api/notifications", middleware.requireLogin, notificationsApiRoute);
 app.use("/api/comments", middleware.requireLogin, commentsApiRoute);
+
+
+
+
+
+const stripe = require("stripe")('sk_test_51LHjpdEZZiK54waal5CeD2qHjc9P5LV7sUqFgUsJ8Vi8EwSkNzGD1XQBEVPCxcKcgabBa8WxdUmWryAs6evDl0Ra00vjb96Cqe');
+
+app.use(express.static("public"));
+app.use(express.json());
+
+const calculateOrderAmount = (items) => {
+  return 1400;
+};
+
+app.post("/create-payment-intent", async (req, res) => {
+  const { items } = req.body;
+
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: calculateOrderAmount(items),
+    currency: "eur",
+    automatic_payment_methods: {
+      enabled: true,
+    },
+  });
+
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+  });
+});
+
+app.listen(4242, () => console.log("Node server listening on port 4242!"));
+
 
 app.get("/", middleware.requireLogin, (req, res, next) => {
 
