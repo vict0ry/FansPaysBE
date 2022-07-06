@@ -13,7 +13,6 @@ const calculateOrderAmount = (items) => {
 router.post("/create", async (req, res) => {
   // const { items } = req.body;
   const customer = await stripe.customers.create();
-  await stripe.customers
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
   customer: customer.id,
@@ -24,6 +23,14 @@ router.post("/create", async (req, res) => {
     enabled: true,
   },
 });
+// const session = await stripe.checkout.sessions.create({
+//   success_url: 'http://localhost:3000',
+//   cancel_url: 'http://localhost:3000',
+//   line_items: [
+//     {price: 'price_H5ggYwtDq4fbrJ', quantity: 2},
+//   ],
+//   mode: 'payment',
+// });
 
 // try {
 //   const paymentIntent = await stripe.paymentIntents.create({
@@ -43,7 +50,7 @@ router.post("/create", async (req, res) => {
 console.log(paymentIntent, 'cskdmaksdkasmkd');
 
   res.send({
-    clientSecret: paymentIntent.client_secret,
+    id: session.id
   });
 });
 module.exports = router;
