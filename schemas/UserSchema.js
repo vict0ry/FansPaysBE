@@ -21,6 +21,7 @@ const UserSchema = new Schema({
     following: [{type: Schema.Types.ObjectId, ref: 'User'}],
     followers: [{type: Schema.Types.ObjectId, ref: 'User'}],
     isBlocked: {type: Boolean, default: false},
+    stripeUserId: {type: String},
     role: {type: String, default: "user", enum: ['user', 'admin', 'moderator']},
 }, {timestamps: true});
 
