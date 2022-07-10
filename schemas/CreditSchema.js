@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
 
 const CreditSchema = new Schema({
@@ -12,5 +11,4 @@ const CreditSchema = new Schema({
     sender: {type: Schema.Types.ObjectId, ref: 'User'},
 }, {timestamps: true});
 
-const Shop = mongoose.model('Credit', CreditSchema);
-module.exports = Shop;
+module.exports = mongoose.model('Credit', CreditSchema);

@@ -1,6 +1,6 @@
 const moment = require("moment");
 const {now} = require("moment");
-const Subscription = require("./schemas/SubscriptionSchema");
+const SubscriptionSchema = require("./schemas/SubscriptionSchema");
 
 class SubscriptionHelper {
     follower;
@@ -10,7 +10,7 @@ class SubscriptionHelper {
     isActive;
     daysLeft;
     async create() {
-        this.subscription = await Subscription.findOne({ $and: [{following: this.following}, {follower: this.follower}  ]});
+        this.subscription = await SubscriptionSchema.findOne({ $and: [{following: this.following}, {follower: this.follower}  ]});
         if (this.subscription) {
             await this.checkIfIsActive();
         } else {
@@ -35,13 +35,13 @@ class SubscriptionHelper {
         if (this.subscription) {
             switch(this.subscription.renewal) {
                 case 'ONEMONTH':
-                    return this.isActive = await this.activeByPackage(30)
+                    return this.isActive = this.activeByPackage(30)
                 case 'THREEMONTH':
-                    return this.isActive = await this.activeByPackage(90)
+                    return this.isActive = this.activeByPackage(90)
                 case 'SIXMONTHS':
-                    return this.isActive = await this.activeByPackage(180)
+                    return this.isActive = this.activeByPackage(180)
                 case 'YEAR':
-                    return this.isActive = await this.activeByPackage(365)
+                    return this.isActive = this.activeByPackage(365)
             }
         }
     }

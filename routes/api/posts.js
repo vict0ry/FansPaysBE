@@ -11,7 +11,6 @@ const multer = require("multer");
 const upload = multer({dest: "uploads/"});
 const fs = require("fs");
 const path = require("path");
-const Subscription = require("../../schemas/SubscriptionSchema");
 const moment = require("moment");
 const {omit} = require("mongoose/lib/utils");
 const {SubscriptionHelper} = require("../../SubscriptionHelper");

@@ -7,14 +7,10 @@ const path = require("path");
 const fs = require("fs");
 const upload = multer({dest: "uploads/"});
 const User = require('../../schemas/UserSchema');
-const Post = require('../../schemas/PostSchema');
-const Notification = require('../../schemas/NotificationSchema');
 const jwt = require("jsonwebtoken");
-const {requireLogin} = require("../../middleware");
 const Credit = require("../../schemas/CreditSchema");
-const Subscription = require("../../schemas/SubscriptionSchema");
-const moment = require("moment");
 const {SubscriptionHelper} = require("../../SubscriptionHelper");
+const {CreditHelper} = require("../../CreditHelper");
 
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -62,34 +58,18 @@ router.put("/:userId/follow", async (req, res, next) => {
 
     if (user == null) return res.sendStatus(404);
     const isFollowing = user.followers && user.followers.includes(_id);
-    const subscription = await new SubscriptionHelper(userData._id, userId).create();
-    if (subscription.isActive) {
+    const subscriptionInit = await new SubscriptionHelper(userData._id, userId).create();
+    if (subscriptionInit.isActive) {
         return res.status(200).send('You already subscribed');
     } else {
         if (!sufficientBalance) {
-            return res.status(200).send('not enough balance');
-        }
-
-        const addedCredit = await Credit.create({
-            description: 'New subscriber',
-            amount: user.subscribtionPrice,
-            recipient: userId,
-            category: 'SUBSCRIPTION',
-            sender: userData._id,
-        })
-        const creditRemoval = await Credit.create({
-            description: 'Subscription payment',
-            amount: user.subscribtionPrice * -1,
-            category: 'SUBSCRIPTION',
-            recipient: userData._id,
-            sender: userId
-        })
-        await Subscription.create({
-            price: user.subscribtionPrice,
-            following: userId,
-            follower: userData._id,
-            renewal: 'ONEMONTH'
+            return res.status(200).send({
+                error: {
+                    message: 'INSUFFICIENT_BALANCE'
+                }
             });
+        }
+        const credit = await new CreditHelper(user, userData).subscribe();
     }
 
 

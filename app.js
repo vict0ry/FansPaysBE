@@ -44,6 +44,8 @@ const commentsApiRoute = require('./routes/api/comments');
 const creditApiRoute = require('./routes/api/credit');
 const wishApiRoute = require('./routes/api/wish');
 const stripeApiRoute = require('./routes/api/stripe');
+const validationsRoute = require('./routes/api/validations');
+
 
 
 const cors = require("cors");
@@ -71,52 +73,12 @@ app.use("/api/messages", middleware.requireLogin, messagesApiRoute);
 app.use("/api/notifications", middleware.requireLogin, notificationsApiRoute);
 app.use("/api/comments", middleware.requireLogin, commentsApiRoute);
 app.use('/api/stripe', middleware.requireLogin, stripeApiRoute);
+app.use('/validations', validationsRoute);
 
-
-
-
-
-// app.use(express.static("public"));
-// app.use(express.json());
-
-// const calculateOrderAmount = (items) => {
-//   return 1400;
-// };
-
-// app.post("/create-payment-intent", async (req, res) => {
-//   const { items } = req.body;
-
-//   // Create a PaymentIntent with the order amount and currency
-//   const paymentIntent = await stripe.paymentIntents.create({
-//     amount: calculateOrderAmount(items),
-//     currency: "eur",
-//     automatic_payment_methods: {
-//       enabled: true,
-//     },
-//   });
-
-//   res.send({
-//     clientSecret: paymentIntent.client_secret,
-//   });
-// });
-
-
-
-app.get("/", middleware.requireLogin, (req, res, next) => {
-
-    const payload = {
-        pageTitle: "Home",
-        userLoggedIn: req.session.user,
-        userLoggedInJs: JSON.stringify(req.session.user),
-    };
-
-    res.status(200).render("home", payload);
-})
 
 io.on("connection", socket => {
 
     socket.on("setup", userData => {
-        // console.log('onsetup...', userData);
         socket.join(userData._id);
         socket.emit("connected");
     })
