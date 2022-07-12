@@ -22,16 +22,16 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="using stripe">
-      <change afterPath="$PROJECT_DIR$/CreditHelper.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/api/validations.js" afterDir="false" />
+    <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="Saving progress">
+      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SubscriptionHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/SubscriptionHelper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/posts.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/posts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/users.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/CreditSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/CreditSchema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/SubscriptionSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/SubscriptionSchema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api/stripe.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/stripe.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/loginRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/loginRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/registerRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/registerRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/UserSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/UserSchema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +102,7 @@
       <workItem from="1656183802363" duration="34303000" />
       <workItem from="1656420953455" duration="17871000" />
       <workItem from="1657132049324" duration="14878000" />
-      <workItem from="1657295663829" duration="9987000" />
+      <workItem from="1657295663829" duration="19490000" />
     </task>
     <task id="LOCAL-00001" summary="fixed following users">
       <created>1656341407689</created>
@@ -174,7 +174,14 @@
       <option name="project" value="LOCAL" />
       <updated>1657225801938</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Saving progress">
+      <created>1657450766576</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1657450766576</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -200,6 +207,7 @@
     <MESSAGE value="saving progress" />
     <MESSAGE value="subscription refactoring" />
     <MESSAGE value="using stripe" />
-    <option name="LAST_COMMIT_MESSAGE" value="using stripe" />
+    <MESSAGE value="Saving progress" />
+    <option name="LAST_COMMIT_MESSAGE" value="Saving progress" />
   </component>
 </project>

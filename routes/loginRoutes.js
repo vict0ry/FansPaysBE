@@ -20,6 +20,7 @@ router.post("/", async (req, res, next) => {
 
     const payload = req.body;
     console.log('here 1')
+    console.log(req.body);
 
     if (req.body.login && req.body.password) {
         const user = await User.findOne({
@@ -35,6 +36,8 @@ router.post("/", async (req, res, next) => {
             });
 
         if (user !== null) {
+            console.log('juserz ? : ',user);
+            console.log('here : ', user.password)
             const result = await bcrypt.compare(req.body.password, user.password);
 
             if (result) {

@@ -12,19 +12,13 @@ app.set("views", "views");
 app.use(bodyParser.urlencoded({extended: true}));
 const jsonParser = bodyParser.json()
 
-
-router.get("/", (req, res, next) => {
-    // res.status(200).send(results);
-    res.status(200).render("register");
-})
-
 router.post("/", async (req, res, next) => {
     const firstName = req.body.firstName.trim();
     const lastName = req.body.lastName.trim();
     const username = req.body.username.trim();
     const email = req.body.email.trim();
     const password = req.body.password;
-
+    const birthDate = req.body.birthDate;
     const payload = req.body;
 
     if (firstName && lastName && username && email && password) {
@@ -37,7 +31,7 @@ router.post("/", async (req, res, next) => {
             .catch((error) => {
                 console.log(error);
                 payload.errorMessage = "Something went wrong.";
-                res.status(200).render("register", payload);
+                res.status(200).send(payload);
             });
 
         if (user == null) {
