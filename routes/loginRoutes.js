@@ -28,7 +28,7 @@ router.post("/", async (req, res, next) => {
                 {username: req.body.login},
                 {email: req.body.login}
             ]
-        })
+        }).select('password')
             .catch((error) => {
                 console.log(error);
                 payload.errorMessage = "Something went wrong.";

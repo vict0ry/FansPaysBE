@@ -22,9 +22,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="Saving progress">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/CreditSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/CreditSchema.js" afterDir="false" />
+    <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="extended credit schema">
+      <change beforePath="$PROJECT_DIR$/routes/loginRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/loginRoutes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +94,7 @@
       <workItem from="1656183802363" duration="34303000" />
       <workItem from="1656420953455" duration="17871000" />
       <workItem from="1657132049324" duration="14878000" />
-      <workItem from="1657295663829" duration="22994000" />
+      <workItem from="1657295663829" duration="23174000" />
     </task>
     <task id="LOCAL-00001" summary="fixed following users">
       <created>1656341407689</created>
@@ -174,7 +173,14 @@
       <option name="project" value="LOCAL" />
       <updated>1657450766576</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="extended credit schema">
+      <created>1657700376363</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1657700376363</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -201,6 +207,7 @@
     <MESSAGE value="subscription refactoring" />
     <MESSAGE value="using stripe" />
     <MESSAGE value="Saving progress" />
-    <option name="LAST_COMMIT_MESSAGE" value="Saving progress" />
+    <MESSAGE value="extended credit schema" />
+    <option name="LAST_COMMIT_MESSAGE" value="extended credit schema" />
   </component>
 </project>
