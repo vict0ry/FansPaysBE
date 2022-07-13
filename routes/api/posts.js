@@ -227,6 +227,26 @@ router.delete('/:id', async (req, res, next) => {
         });
 });
 
+router.post('/:id/update', async (req, res, next) => {
+    const user = await jwt.decode(req.headers.authorization, 'secretkey');
+    console.log('/:id/update');
+    const postId = req.params.id;
+
+    await Post.findOne({postedBy: user._id, _id: postId})
+        .then(async result => {
+            result.content = req.body.content;
+            result.pictures = req.body.pictures;
+
+            await result.save();
+
+            res.status(200).send(result);
+        })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(400);
+        });
+});
+
 router.post("/:id/retweet", async (req, res, next) => {
     const postId = req.params.id;
     const userId = req.session.user._id;
