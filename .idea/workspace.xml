@@ -23,15 +23,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="Saving progress">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/stripe.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/stripe.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/loginRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/loginRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/registerRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/registerRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/UserSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/UserSchema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/CreditSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/CreditSchema.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +95,7 @@
       <workItem from="1656183802363" duration="34303000" />
       <workItem from="1656420953455" duration="17871000" />
       <workItem from="1657132049324" duration="14878000" />
-      <workItem from="1657295663829" duration="19490000" />
+      <workItem from="1657295663829" duration="22994000" />
     </task>
     <task id="LOCAL-00001" summary="fixed following users">
       <created>1656341407689</created>
