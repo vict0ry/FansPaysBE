@@ -23,30 +23,22 @@ router.post("/", async (req, res, next) => {
     console.log(req.body);
 
     if (req.body.login && req.body.password) {
-        const user = await User.findOne({
+        const findUser = User.findOne({
             $or: [
                 {username: req.body.login},
                 {email: req.body.login}
             ]
-        }).select('password')
-            .catch((error) => {
-                console.log(error);
-                payload.errorMessage = "Something went wrong.";
-                res.status(500).send(payload.errorMessage);
-            });
-
+        });
+        const user = await findUser;
         if (user !== null) {
-            console.log('juserz ? : ',user);
-            console.log('here : ', user.password)
-            const result = await bcrypt.compare(req.body.password, user.password);
-
+            const pass = await findUser.select('password');
+            const result = await bcrypt.compare(req.body.password, pass.password);
             if (result) {
                 const token = jwt.sign(user.toJSON(), 'secretkey');
                 req.session.user = user;
                 return res.send(token);
             }
         }
-
         payload.errorMessage = "Login credentials incorrect.";
         return res.status(404).send(payload.errorMessage);
     }
