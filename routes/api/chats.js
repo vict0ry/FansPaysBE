@@ -89,6 +89,7 @@ router.get("/:chatId/messages", async (req, res, next) => {
     console.log(':chatId/messages');
     Message.find({chat: req.params.chatId})
         .populate("sender")
+        .populate("product")
         .then(results => res.status(200).send(results))
         .catch(error => {
             console.log(error);
