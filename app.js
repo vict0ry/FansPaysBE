@@ -45,6 +45,7 @@ const creditApiRoute = require('./routes/api/credit');
 const wishApiRoute = require('./routes/api/wish');
 const stripeApiRoute = require('./routes/api/stripe');
 const validationsRoute = require('./routes/api/validations');
+const demandsApiRoute = require('./routes/api/demands');
 
 
 
@@ -62,6 +63,7 @@ app.use("/search", middleware.requireLogin, searchRoute);
 app.use("/messages", middleware.requireLogin, messagesRoute);
 app.use("/notifications", middleware.requireLogin, notificationsRoute);
 app.use("/api/shop", middleware.requireLogin, shopApiRoute);
+app.use("/api/demands", middleware.requireLogin, demandsApiRoute);
 app.use("/api/wish", middleware.requireLogin, wishApiRoute);
 
 

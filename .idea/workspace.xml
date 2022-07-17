@@ -23,10 +23,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="be changes">
+      <change afterPath="$PROJECT_DIR$/routes/api/demands.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/schemas/DemandsSchema.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CreditHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/CreditHelper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/credit.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/credit.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/CreditSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/CreditSchema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas/ShopSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/ShopSchema.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +100,7 @@
       <workItem from="1657132049324" duration="14878000" />
       <workItem from="1657295663829" duration="23174000" />
       <workItem from="1657792082925" duration="10624000" />
-      <workItem from="1657907004594" duration="24786000" />
+      <workItem from="1657907004594" duration="26520000" />
     </task>
     <task id="LOCAL-00001" summary="fixed following users">
       <created>1656341407689</created>
