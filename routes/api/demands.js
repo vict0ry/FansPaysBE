@@ -14,4 +14,8 @@ router.post("/", async (req, res, next) => {
     });
     return res.status(200).send(demand);
 })
+router.get('/:id', async (req,res, next) => {
+    const demands = await Demands.find({recipient: req.params.id}).populate('postedBy');
+    return res.status(200).send(demands);
+})
 module.exports = router;
