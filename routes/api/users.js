@@ -11,6 +11,7 @@ const jwt = require("jsonwebtoken");
 const Credit = require("../../schemas/CreditSchema");
 const {SubscriptionHelper} = require("../../SubscriptionHelper");
 const {CreditHelper} = require("../../CreditHelper");
+const Notification = require("../../schemas/NotificationSchema");
 
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -73,10 +74,6 @@ router.put("/:userId/follow", async (req, res, next) => {
     const userId = req.params.userId;
 
     const user = await User.findById(userId);
-    const incomeCredits = await Credit.find({recipient: _id});
-    const outcomeCredits = await Credit.find({sender: _id});
-    const total = incomeCredits.map(i => i.amount).reduce((a,b) => a+b, 0) - outcomeCredits.map(i => i.amount).reduce((a,b) => a+b, 0);
-    const sufficientBalance = (Number(total) > Number(user.subscribtionPrice));
 
     if (user == null) return res.sendStatus(404);
     const isFollowing = user.followers && user.followers.includes(_id);
@@ -84,14 +81,8 @@ router.put("/:userId/follow", async (req, res, next) => {
     if (subscriptionInit.isActive) {
         return res.status(200).send('You already subscribed');
     } else {
-        if (!sufficientBalance) {
-            return res.status(200).send({
-                error: {
-                    message: 'INSUFFICIENT_BALANCE'
-                }
-            });
-        }
-        const credit = await new CreditHelper(user, userData).subscribe();
+        await new CreditHelper(userData, user, res).subscribe();
+        await Notification.insertNotification(userId, _id, "FOLLOW");
     }
 
 

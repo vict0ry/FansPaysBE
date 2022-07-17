@@ -7,6 +7,17 @@ class CreditHelper {
         this.from = from;
         this.to = to;
     }
+
+    async insufficientBalance(amount) {
+        const userBalance = await this.userBalance(this.from);
+        return userBalance < amount;
+    }
+
+    async userBalance(userId) {
+        const incomeCredits = await Credit.find({recipient: userId});
+        const outcomeCredits = await Credit.find({sender: userId});
+        return incomeCredits.map(i => i.amount).reduce((a,b) => a+b, 0) - outcomeCredits.map(i => i.amount).reduce((a,b) => a+b, 0);
+    }
     async subscribe() {
         const addedCredit = await Credit.create({
             description: 'New subscriber',
@@ -46,6 +57,7 @@ class CreditHelper {
             recipient: this.from._id,
             sender: this.to._id
         });
+        return true;
     }
 }
 module.exports = {CreditHelper};

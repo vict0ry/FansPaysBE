@@ -59,8 +59,9 @@ router.get('/:username', async (req, res, next) => {
     const username = req.params.username;
     const loggedUser = await jwt.decode(req.headers.authorization, 'secretkey');
     const user = await User.findOne({username: username});
-    const id = user?._id;
-    let posts = await Post.find({postedBy: id})
+    const postOwnerId = user?._id;
+    const isOwner = postOwnerId === loggedUser._id;
+    let posts = await Post.find({postedBy: postOwnerId})
         .populate("postedBy")
         .populate({
         path: 'comments',
@@ -76,7 +77,7 @@ router.get('/:username', async (req, res, next) => {
             }
         }
     }).lean();
-    const subscription = await new SubscriptionHelper(loggedUser._id, id).create();
+    const subscription = await new SubscriptionHelper(loggedUser._id, postOwnerId).create();
     if (!subscription.isActive) {
         posts = posts.map(post => {
             const {pictures, comments, ...omitedPost} = post;

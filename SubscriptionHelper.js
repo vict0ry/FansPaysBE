@@ -11,16 +11,20 @@ class SubscriptionHelper {
     daysLeft;
     async create() {
         this.subscription = await SubscriptionSchema.findOne({ $and: [{following: this.following}, {follower: this.follower}  ]});
-        if (this.subscription) {
-            await this.checkIfIsActive();
+        if (this.following === this.follower) {
+            this.isActive = true;
         } else {
-            this.isActive = false;
+            if (this.subscription) {
+                await this.checkIfIsActive();
+            } else {
+                this.isActive = false;
+            }
         }
         return this;
     }
     constructor(follower, following) {
-        this.follower = follower;
-        this.following = following;
+        this.follower = follower.toString().trim();
+        this.following = following.toString().trim();
 
     }
     activeByPackage(days) {
@@ -32,6 +36,7 @@ class SubscriptionHelper {
         return this.now.diff(purchase_date, 'days') * -1;
     }
     async checkIfIsActive() {
+        console.log('subscription :', this.subscription);
         if (this.subscription) {
             switch(this.subscription.renewal) {
                 case 'ONEMONTH':

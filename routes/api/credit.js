@@ -3,19 +3,24 @@ const app = express();
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const Credit = require("../../schemas/CreditSchema");
+const {CreditHelper} = require("../../CreditHelper");
 
 
 router.post("/", async (req, res, next) => {
+    const category = req.body.category;
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
-    const income = await Credit.find({recipient: user._id}).then(i => i.map(i => i.amount).reduce((a, b) => a + b, 0))
-    const outcome = await Credit.find({sender: user._id}).then(i => i.map(i => i.amount).reduce((a, b) => a + b, 0)) + req.body.amount
-    const credit = await Credit.create({
-        description: req.body.description,
-        amount: req.body.amount,
-        recipient: req.body.recipient,
-        sender: user._id,
-    })
-    res.send(credit);
+    const creditInstance = await new CreditHelper(user._id, req.body.recipient);
+    if (category === 'TIP') {
+        if(await creditInstance.insufficientBalance(req.body.amount)) {
+            return res.status(200).send({
+                error: {
+                    message: 'INSUFFICIENT_BALANCE'
+                }
+            });
+        }
+        await creditInstance.tip(req.body.amount);
+    }
+    res.sendStatus(200);
 })
 router.post('/addremove', async (req,res,next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
@@ -42,6 +47,8 @@ router.get('/', async (req, res, next) => {
 
     return res.send({
         transactions: incomeAndOutcome,
+        income: incomeCredits,
+        outcome: outcomeCredits,
         total
     });
 })
