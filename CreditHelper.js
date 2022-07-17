@@ -59,5 +59,22 @@ class CreditHelper {
         });
         return true;
     }
+    async wish(amount) {
+        const addedCredit = await Credit.create({
+            description: 'Wish tip from user',
+            amount,
+            recipient: this.to._id,
+            category: 'WISH',
+            sender: this.from._id,
+        })
+        const creditRemoval = await Credit.create({
+            description: 'Wish tip from you',
+            amount: amount * -1,
+            category: 'WISH',
+            recipient: this.from._id,
+            sender: this.to._id
+        });
+        return true;
+    }
 }
 module.exports = {CreditHelper};

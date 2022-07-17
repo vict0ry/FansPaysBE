@@ -22,14 +22,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="pass seleection">
+    <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="be changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CreditHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/CreditHelper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SubscriptionHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/SubscriptionHelper.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api/credit.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/credit.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/posts.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/posts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/users.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/profileRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/profileRoutes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas/CreditSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/CreditSchema.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -103,7 +99,7 @@
       <workItem from="1657132049324" duration="14878000" />
       <workItem from="1657295663829" duration="23174000" />
       <workItem from="1657792082925" duration="10624000" />
-      <workItem from="1657907004594" duration="21763000" />
+      <workItem from="1657907004594" duration="24786000" />
     </task>
     <task id="LOCAL-00001" summary="fixed following users">
       <created>1656341407689</created>
@@ -189,7 +185,14 @@
       <option name="project" value="LOCAL" />
       <updated>1657700376363</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="be changes">
+      <created>1658065696745</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1658065696745</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -217,6 +220,7 @@
     <MESSAGE value="using stripe" />
     <MESSAGE value="Saving progress" />
     <MESSAGE value="extended credit schema" />
-    <option name="LAST_COMMIT_MESSAGE" value="extended credit schema" />
+    <MESSAGE value="be changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="be changes" />
   </component>
 </project>
