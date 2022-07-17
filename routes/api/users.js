@@ -16,6 +16,10 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 router.get("/", async (req, res, next) => {
     let searchObj = req.query;
+    let perPage = 12
+        , page = req.query.page > 0 ? req.query.page : 0;
+    const count = await User.count();
+
 
 
     if (req.query.search !== undefined) {
@@ -27,8 +31,17 @@ router.get("/", async (req, res, next) => {
             ]
         }
     } else {
-        User.find()
-            .then(results => res.status(200).send(results))
+       return User.find()
+            .limit(perPage)
+            .skip(perPage * page)
+            .sort({username: 'asc'})
+            .then(async (data) => {
+                return res.status(200).send({
+                    data,
+                    page,
+                    pages: Math.floor(count / perPage)
+                })
+            })
             .catch(error => {
                 console.log(error);
                 res.sendStatus(400);
@@ -36,7 +49,16 @@ router.get("/", async (req, res, next) => {
     }
 
     User.find(searchObj)
-        .then(results => res.status(200).send(results))
+        .limit(perPage)
+        .skip(perPage * page)
+        .sort({username: 'asc'})
+        .then(async (data) => {
+            return res.status(200).send({
+                data,
+                page,
+                pages: Math.floor(count / perPage)
+            })
+        })
         .catch(error => {
             console.log(error);
             res.sendStatus(400);
