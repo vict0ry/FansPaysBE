@@ -7,7 +7,7 @@ const Wish = require("../../schemas/WishSchema");
 router.get('/:id', async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
     if (req.params.id !== 'undefined') {
-        return Wish.find({owner: req.params.id}).then(data => {
+        return Wish.find({owner: req.params.id}).populate('collected').then(data => {
             return res.send(data);
         })
     }

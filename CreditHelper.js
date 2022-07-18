@@ -1,5 +1,6 @@
 const Credit = require("./schemas/CreditSchema");
 const Subscription = require('./schemas/SubscriptionSchema');
+const Wish = require("./schemas/WishSchema");
 class CreditHelper {
     from;
     to;
@@ -59,20 +60,23 @@ class CreditHelper {
         });
         return true;
     }
-    async wish(amount) {
+    async wish(amount, wishId) {
         const addedCredit = await Credit.create({
             description: 'Wish tip from user',
             amount,
             recipient: this.to._id,
             category: 'WISH',
             sender: this.from._id,
+            wish: wishId
         })
+        await Wish.findByIdAndUpdate(wishId, {["$addToSet"]: {collected: addedCredit._id}});
         const creditRemoval = await Credit.create({
             description: 'Wish tip from you',
             amount: amount * -1,
             category: 'WISH',
             recipient: this.from._id,
-            sender: this.to._id
+            sender: this.to._id,
+            wish: wishId
         });
         return true;
     }

@@ -1,9 +1,12 @@
 const jwt = require("jsonwebtoken");
+// const moment = require("moment");
+// const User = require("./schemas/UserSchema");
 exports.requireLogin = (req, res, next) => {
-   // return next();
     try {
         const isVerified = jwt.verify(req.headers.authorization, 'secretkey');
         if (isVerified) {
+            const userId = jwt.decode(req.headers.authorization, 'secretkey')._id;
+            // User.findOneAndUpdate({userId: _id}, {lastOnline: moment.now()});
             return next();
         }
     } catch(err) {

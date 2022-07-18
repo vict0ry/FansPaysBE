@@ -19,5 +19,6 @@ const CreditSchema = new Schema({
         required: true},
     recipient: {type: Schema.Types.ObjectId, ref: 'User'},
     sender: {type: Schema.Types.ObjectId, ref: 'User'},
+    wish: {type: Schema.Types.ObjectId, ref: 'Wish'}
 }, {timestamps: true});
 module.exports = mongoose.model('Credit', CreditSchema);
