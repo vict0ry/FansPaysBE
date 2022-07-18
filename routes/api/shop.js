@@ -9,6 +9,7 @@ const fs = require("fs");
 const path = require("path");
 const Message = require("../../schemas/MessageSchema");
 const Chat = require("../../schemas/ChatSchema");
+const User = require("../../schemas/UserSchema");
 
 
 router.post("/", upload.array("images[]"), async (req, res, next) => {
@@ -50,9 +51,6 @@ router.post("/", upload.array("images[]"), async (req, res, next) => {
 
     Shop.create(shopData)
         .then(async newProduct => {
-            // if (newPost.replyTo !== undefined) {
-            //     // await Notification.insertNotification(newPost.replyTo.postedBy, req.session.user._id, "reply", newPost._id);
-            // }
             res.status(201).send(newProduct);
         })
         .catch(error => {
@@ -65,10 +63,27 @@ router.get('/:profileId', async (req, res, next) => {
         return res.send(data);
     })
 })
+router.get('/', async (req,res,next) => {
+    let searchObj = req.query;
+    let perPage = 12
+        , page = req.query.page > 0 ? req.query.page : 0;
+    const count = await Shop.count();
+
+    return Shop.find()
+        .limit(perPage)
+        .skip(perPage * page)
+        .sort({username: 'asc'})
+        .then(async (data) => {
+            return res.status(200).send({
+                data,
+                page,
+                pages: Math.floor(count / perPage)
+            });
+        });
+});
 router.post('/buy/:id', async (req,res,next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
     const product = await Shop.findOne({_id: req.params.id});
-    console.log(product)
 
     const chatData = {
         users: [user._id, product.postedBy._id],
