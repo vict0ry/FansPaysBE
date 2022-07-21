@@ -12,6 +12,7 @@ const Credit = require("../../schemas/CreditSchema");
 const {SubscriptionHelper} = require("../../SubscriptionHelper");
 const {CreditHelper} = require("../../CreditHelper");
 const Notification = require("../../schemas/NotificationSchema");
+const bcrypt = require("bcrypt");
 
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -133,6 +134,8 @@ router.get("/:userId/followers", async (req, res, next) => {
         })
 });
 router.put("/updateprofile", async (req, res, next) => {
+    console.log(req.body.email, req.body.checkboxes);
+
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
     const foundUser = await User.findByIdAndUpdate(user._id, {
         description: req.body.description,
@@ -142,6 +145,32 @@ router.put("/updateprofile", async (req, res, next) => {
         birthDate: req.body.birthDate
     }, {new: true});
     res.status(200).send(foundUser)
+});
+
+// router.put("/updateParameters", async(req, res) => {
+//     const userJwt = await jwt.decode(req.headers.authorization, 'secretkey');
+//     const user = await User.findOne({_id: userJwt._id});
+//
+// });
+
+router.put("/updatePassword", async (req, res) => {
+    const userJwt = await jwt.decode(req.headers.authorization, 'secretkey');
+    const findUser = User.findOne({_id: userJwt._id});
+    const user = await findUser;
+
+    const pass = await findUser.select('password');
+
+    const result = await bcrypt.compare(req.body.oldPassword, pass.password);
+
+    if(result){
+        const newPassHash = await bcrypt.hash(req.body.newPassword, 10);
+        user.password = newPassHash;
+        await user.save();
+
+        res.status(200).send("password changed successful");
+    } else {
+        res.status(400).send("old password does not match");
+    }
 });
 
 router.put('/subscribtionPrice', async (req,res,next) => {

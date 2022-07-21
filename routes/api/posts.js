@@ -117,6 +117,9 @@ router.post("/", upload.array("images[]"), async (req, res, next) => {
         return res.sendStatus(400);
     }
     let filesPath = [];
+
+    console.log(req.files)
+
     if (req.files.length) {
         req.files.forEach(file => {
             console.log(file);
@@ -125,6 +128,7 @@ router.post("/", upload.array("images[]"), async (req, res, next) => {
             const filePath = `/uploads/images/${file.filename}.` + ending;
             const tempPath = file.path;
             const targetPath = path.join(__dirname, `../../${filePath}`);
+            console.log("target: ", filePath);
             filesPath.push(filePath);
             fs.rename(tempPath, targetPath, async error => {
                 if (error != null) {
@@ -233,10 +237,16 @@ router.post('/:id/update', async (req, res, next) => {
     console.log('/:id/update');
     const postId = req.params.id;
 
+    console.log(req.body.content)
+    console.log(req.files)
+
     await Post.findOne({postedBy: user._id, _id: postId})
         .then(async result => {
             result.content = req.body.content;
-            result.pictures = req.body.pictures;
+
+            console.log(req.body.pictures)
+
+            // result.pictures = req.body.pictures;
 
             await result.save();
 

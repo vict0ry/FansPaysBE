@@ -22,14 +22,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="be changes">
+    <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="extended credit schema">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CreditHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/CreditHelper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/wish.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/wish.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/CreditSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/CreditSchema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/UserSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/UserSchema.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/WishSchema.js" beforeDir="false" afterPath="$PROJECT_DIR$/schemas/WishSchema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api/posts.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/posts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/users.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +60,10 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/public" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
@@ -103,6 +103,7 @@
       <workItem from="1657295663829" duration="23174000" />
       <workItem from="1657792082925" duration="10624000" />
       <workItem from="1657907004594" duration="37034000" />
+      <workItem from="1658310952424" duration="11719000" />
     </task>
     <task id="LOCAL-00001" summary="fixed following users">
       <created>1656341407689</created>
@@ -211,6 +212,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
