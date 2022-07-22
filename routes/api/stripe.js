@@ -48,6 +48,20 @@ router.post('/pay', async(req,res, next) => {
   return '';
 })
 
+router.get('/cards', async (req,res,next) => {
+  const user = await jwt.decode(req.headers.authorization, 'secretkey');
+  const foundUser = await User.findOne({
+    username: user.username
+  })
+  const paymentMethods = await stripe.paymentMethods.list({
+    customer: foundUser.stripeUserId,
+    type: 'card',
+  });
+
+  return res.send(paymentMethods);
+
+})
+
 router.post("/create", async (req, res) => {
   const user = await jwt.decode(req.headers.authorization, 'secretkey');
   const foundUser = await User.findOne({
