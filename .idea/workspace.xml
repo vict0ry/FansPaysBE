@@ -22,22 +22,16 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="extended credit schema">
-      <change afterPath="$PROJECT_DIR$/uploads/4943984ad9fdaaf453a52ec77514298d" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/60a3f0b7c9f5613d1d5332891b1ba6ad" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/6a141e563e6b86e9a87de2b65164ba5e" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/90e1b1a279f5eda772e605116ef02096" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/a91a78bd6dfd10cd4610619d9fd14534" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/c3c94ff90a4cd400dd74b744ad1af129" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/f1d770a52b26ed24f1514a73b7ea3ce9" afterDir="false" />
+    <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/uploads/images/4404f94dfd5dc76385979959d9f33d52.15" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/images/756d34a313eac45e8d4502842aa64d59.32" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/images/ff6d64bd1b39d82a63b2b389e3ecd331.07" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CreditHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/CreditHelper.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api/credit.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/credit.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api/posts.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/posts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/214e712f4b9889cf1704137e5fd3d799.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/78acc634e91f4af19bc8a8fdb0b170d2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/a4bb63c3c1b3b10297da5c05a446b93f.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/acc3de553ba6c9d5a11fd47a6fcec4fc.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/cd2e78c54a7e95e5326c885bdd6b0c16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/images/f87999e67a4bed23ee3f3dd0501c5dd1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api/stripe.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/stripe.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/users.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,6 +110,7 @@
       <workItem from="1657792082925" duration="10624000" />
       <workItem from="1657907004594" duration="37034000" />
       <workItem from="1658310952424" duration="20155000" />
+      <workItem from="1658753934495" duration="692000" />
     </task>
     <task id="LOCAL-00001" summary="fixed following users">
       <created>1656341407689</created>
@@ -214,6 +209,16 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -224,7 +229,6 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />

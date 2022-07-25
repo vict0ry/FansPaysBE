@@ -4,12 +4,16 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const Credit = require("../../schemas/CreditSchema");
 const {CreditHelper} = require("../../CreditHelper");
+const User = require("../../schemas/UserSchema");
 
 
 router.post("/", async (req, res, next) => {
     const category = req.body.category;
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
-    const creditInstance = await new CreditHelper(user._id, req.body.recipient);
+    const recipient = await User.findOne({'_id': req.body.recipient});
+    console.log('found recipient: ', recipient);
+    const creditInstance = await new CreditHelper(user, recipient);
+    console.log('initiated ? ', creditInstance.from._id + ' ' + creditInstance.to._id)
     if(await creditInstance.insufficientBalance(req.body.amount)) {
         return res.status(200).send({
             error: {
@@ -21,6 +25,7 @@ router.post("/", async (req, res, next) => {
         await creditInstance.tip(req.body.amount);
     }
     else if (category === 'WISH') {
+        console.log('initiated 2? ', creditInstance.from._id + ' ' + creditInstance.to._id)
         await creditInstance.wish(req.body.amount, req.body.wishId);
     }
     res.sendStatus(200);
@@ -43,15 +48,14 @@ router.post('/addremove', async (req,res,next) => {
 })
 router.get('/', async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
-    const incomeAndOutcome = await Credit.find({$or: [{recipient: user._id}, {sender: user._id}]}).populate("recipient").populate("sender")
-    const incomeCredits = await Credit.find({recipient: user._id});
-    const outcomeCredits = await Credit.find({sender: user._id});
-    const total = incomeCredits.map(i => i.amount).reduce((a,b) => a+b,0) - outcomeCredits.map(i => i.amount).reduce((a,b) => a+b,0);
+    const incomeAndOutcome = await Credit.find({recipient: user._id})
+        .populate("recipient")
+        .populate("sender")
+        .sort('-date');
+    const total = incomeAndOutcome.map(i => i.amount).reduce((a,b) => a+b,0);
 
     return res.send({
         transactions: incomeAndOutcome,
-        income: incomeCredits,
-        outcome: outcomeCredits,
         total
     });
 })

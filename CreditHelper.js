@@ -5,12 +5,20 @@ class CreditHelper {
     from;
     to;
     constructor(from, to) {
+        if ((typeof from === 'string' || from instanceof String) || (typeof to === 'string' || to instanceof String)) {
+            throw('We need user object, not the ID');
+        }
+        console.log('constructor111: ', from._id);
+        console.log('const2222: ', to._id);
+
+
         this.from = from;
         this.to = to;
+        console.log('constructor: ', this.from._id + ' ' + this.to._id);
     }
 
     async insufficientBalance(amount) {
-        const userBalance = await this.userBalance(this.from);
+        const userBalance = await this.userBalance(this.from._id);
         return userBalance < amount;
     }
 
@@ -69,6 +77,11 @@ class CreditHelper {
             sender: this.from._id,
             wish: wishId
         })
+        console.log('addedCredit: ', addedCredit);
+        console.log('sender: ', this.from._id);
+        console.log('recipient: ', this.to._id);
+
+
         await Wish.findByIdAndUpdate(wishId, {["$addToSet"]: {collected: addedCredit._id}});
         const creditRemoval = await Credit.create({
             description: 'Wish tip from you',
@@ -78,6 +91,7 @@ class CreditHelper {
             sender: this.to._id,
             wish: wishId
         });
+        console.log('creditRemoval: ', creditRemoval);
         return true;
     }
 }

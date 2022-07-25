@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../../schemas/UserSchema");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const app = express();
 const router = express.Router();
 
@@ -44,7 +45,6 @@ router.post('/pay', async(req,res, next) => {
       err
     })
   }
-
   return '';
 })
 
