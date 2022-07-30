@@ -118,8 +118,6 @@ router.post("/", upload.array("images[]"), async (req, res, next) => {
     }
     let filesPath = [];
 
-    console.log(req.files)
-
     if (req.files.length) {
         req.files.forEach(file => {
             console.log(file);
@@ -232,21 +230,60 @@ router.delete('/:id', async (req, res, next) => {
         });
 });
 
-router.post('/:id/update', async (req, res, next) => {
+router.post('/:id/update', upload.array("images[]"), async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
     console.log('/:id/update');
     const postId = req.params.id;
 
-    console.log(req.body.content)
+    if (!req.body.content) {
+        console.log("Content param not sent with request");
+        return res.sendStatus(400);
+    }
+    let filesPath = [];
+
     console.log(req.files)
+    console.log("body: ", req.body)
 
     await Post.findOne({postedBy: user._id, _id: postId})
         .then(async result => {
             result.content = req.body.content;
 
-            console.log(req.body.pictures)
+            console.log("PICTURES: ", result.pictures)
 
-            // result.pictures = req.body.pictures;
+            if(req.body.images) {
+                result.pictures.forEach(picture => {
+                    const findResult = req.body.images.find(picImages => picture === picImages);
+                    findResult ? filesPath.push(findResult) : fs.unlink(path.join(__dirname, `../../${picture}`), (err) => {
+                        if (err) throw err;
+                        console.log(picture, ' was deleted');
+                    });
+                    ;
+                });
+                console.log("changed", filesPath)
+            }
+
+            if (req.files.length) {
+                req.files.forEach(file => {
+                    const ending = file.originalname.split('.')[1];
+                    console.log('ending: ', ending);
+                    const filePath = `/uploads/images/${file.filename}.` + ending;
+                    const tempPath = file.path;
+                    const targetPath = path.join(__dirname, `../../${filePath}`);
+                    console.log("target: ", filePath);
+                    filesPath.push(filePath);
+                    fs.rename(tempPath, targetPath, async error => {
+                        if (error != null) {
+                            console.log(error);
+                            return res.sendStatus(400);
+                        }
+                    })
+                })
+
+            }
+
+            result.pictures = filesPath;
+
+            console.log(result.pictures)
 
             await result.save();
 
@@ -342,10 +379,8 @@ async function getPosts(filter) {
                 }
             }
         })
-        .sort({"createdAt": -1})
+        .sort('-date')
         .catch(error => console.log(error));
-
-    console.log('getposts')
 
     results = await User.populate(results, {path: "replyTo.postedBy"})
     return User.populate(results, {path: "retweetData.postedBy"});

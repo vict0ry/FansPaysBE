@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../../schemas/UserSchema");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const app = express();
 const router = express.Router();
 
@@ -20,7 +21,6 @@ router.post('/pay', async(req,res, next) => {
     customer: foundUser.stripeUserId,
     type: 'card',
   });
-
 
   try {
     const paymentIntent = await stripe.paymentIntents.create({
@@ -44,7 +44,6 @@ router.post('/pay', async(req,res, next) => {
       err
     })
   }
-
   return '';
 })
 

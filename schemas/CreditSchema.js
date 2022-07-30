@@ -10,6 +10,7 @@ const CreditSchema = new Schema({
             'WISH',
             'MESSENGER',
             'SHOP',
+            'DEMAND',
             'SUBSCRIPTION',
             'ADMIN_ACTION',
             'ROBOT',
@@ -17,6 +18,7 @@ const CreditSchema = new Schema({
             'FILL',
             'TIP'],
         required: true},
+    inHold: { type: Boolean, default: false },
     recipient: {type: Schema.Types.ObjectId, ref: 'User'},
     sender: {type: Schema.Types.ObjectId, ref: 'User'},
     wish: {type: Schema.Types.ObjectId, ref: 'Wish'}
