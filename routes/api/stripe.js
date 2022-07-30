@@ -22,7 +22,6 @@ router.post('/pay', async(req,res, next) => {
     type: 'card',
   });
 
-
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: calculateOrderAmount(),

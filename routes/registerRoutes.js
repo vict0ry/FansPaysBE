@@ -21,6 +21,12 @@ router.post("/", async (req, res, next) => {
     const birthDate = req.body.birthDate;
     const payload = req.body;
 
+    const isValidEmail = /\S+@\S+\.\S+/;
+    if (!isValidEmail.test(email)) {
+        payload.errorMessage = "Invalid email.";
+        return res.status(500).send({errorMessage: payload.errorMessage});
+    }
+
     if (firstName && lastName && username && email && password) {
         const user = await User.findOne({
             $or: [

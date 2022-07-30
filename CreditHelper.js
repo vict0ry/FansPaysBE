@@ -1,6 +1,7 @@
 const Credit = require("./schemas/CreditSchema");
 const Subscription = require('./schemas/SubscriptionSchema');
 const Wish = require("./schemas/WishSchema");
+const stripe = require("stripe")('sk_test_51LHjpdEZZiK54waal5CeD2qHjc9P5LV7sUqFgUsJ8Vi8EwSkNzGD1XQBEVPCxcKcgabBa8WxdUmWryAs6evDl0Ra00vjb96Cqe');
 class CreditHelper {
     from;
     to;
@@ -8,13 +9,8 @@ class CreditHelper {
         if ((typeof from === 'string' || from instanceof String) || (typeof to === 'string' || to instanceof String)) {
             throw('We need user object, not the ID');
         }
-        console.log('constructor111: ', from._id);
-        console.log('const2222: ', to._id);
-
-
         this.from = from;
         this.to = to;
-        console.log('constructor: ', this.from._id + ' ' + this.to._id);
     }
 
     async insufficientBalance(amount) {
@@ -93,6 +89,21 @@ class CreditHelper {
         });
         console.log('creditRemoval: ', creditRemoval);
         return true;
+    }
+    async chargeSavedCard(amount) {
+        const paymentMethods = await stripe.paymentMethods.list({
+            customer: this.from.stripeUserId,
+            type: 'card',
+        });
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: amount * 100,
+            currency: "czk",
+            payment_method: paymentMethods.data[0].id,
+            customer: this.from.stripeUserId,
+            off_session: true,
+            confirm: true
+        });
+        return paymentIntent
     }
 }
 module.exports = {CreditHelper};

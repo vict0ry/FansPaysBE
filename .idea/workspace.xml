@@ -22,16 +22,15 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/uploads/images/4404f94dfd5dc76385979959d9f33d52.15" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/images/756d34a313eac45e8d4502842aa64d59.32" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/images/ff6d64bd1b39d82a63b2b389e3ecd331.07" afterDir="false" />
+    <list default="true" id="9010042c-5bf2-4b3c-91c3-529355bd30b6" name="Default Changelist" comment="be changes">
+      <change afterPath="$PROJECT_DIR$/uploads/images/33b9861619136293f4ab433127a8e35a.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_07_2022_19_31_[Default_Changelist]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_07_2022_19_31__Default_Changelist_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CreditHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/CreditHelper.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api/credit.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/credit.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/posts.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/posts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api/stripe.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/stripe.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/registerRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/registerRoutes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +109,8 @@
       <workItem from="1657792082925" duration="10624000" />
       <workItem from="1657907004594" duration="37034000" />
       <workItem from="1658310952424" duration="20155000" />
-      <workItem from="1658753934495" duration="692000" />
+      <workItem from="1658753934495" duration="5231000" />
+      <workItem from="1658766256752" duration="5426000" />
     </task>
     <task id="LOCAL-00001" summary="fixed following users">
       <created>1656341407689</created>
@@ -203,7 +203,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658065696745</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="be changes">
+      <created>1658760359434</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1658760359434</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

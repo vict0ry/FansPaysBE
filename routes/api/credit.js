@@ -11,15 +11,21 @@ router.post("/", async (req, res, next) => {
     const category = req.body.category;
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
     const recipient = await User.findOne({'_id': req.body.recipient});
-    console.log('found recipient: ', recipient);
     const creditInstance = await new CreditHelper(user, recipient);
-    console.log('initiated ? ', creditInstance.from._id + ' ' + creditInstance.to._id)
+
     if(await creditInstance.insufficientBalance(req.body.amount)) {
-        return res.status(200).send({
-            error: {
-                message: 'INSUFFICIENT_BALANCE'
-            }
-        });
+        if (!user.stripeUserId) {
+            return res.status(200).send({
+                error: {
+                    message: 'INSUFFICIENT_BALANCE'
+                }
+            });
+        } else {
+            console.log('here 01')
+            creditInstance.chargeSavedCard(55500).then(i => {
+                return res.sendStatus(200).send(i);
+            })
+        }
     }
     if (category === 'TIP') {
         await creditInstance.tip(req.body.amount);
