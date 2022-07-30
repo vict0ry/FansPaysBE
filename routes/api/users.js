@@ -196,6 +196,12 @@ router.put('/subscribtionPrice', async (req,res,next) => {
     })
 });
 
+router.get('/search/:username', async (req,res,next) => {
+    const users = await User.find({ username: {$regex: req.params.username.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')} });
+    console.log(users.map(i => i.username));
+    return res.status(200).send(users.map(i => i.username));
+})
+
 router.post("/profilePicture", upload.single("croppedImage"), async (req, res, next) => {
     const user = await jwt.decode(req.headers.authorization, 'secretkey');
     if (!req.file) {

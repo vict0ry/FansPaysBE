@@ -47,6 +47,24 @@ class CreditHelper {
         return true;
     }
 
+    async demand(amount) {
+        const addedCredit = await Credit.create({
+            description: 'Demand payment',
+            amount,
+            recipient: this.to._id,
+            category: 'DEMAND',
+            sender: this.from._id,
+        })
+        const creditRemoval = await Credit.create({
+            description: 'Demand payment',
+            amount: amount * -1,
+            category: 'DEMAND',
+            recipient: this.from._id,
+            sender: this.to._id
+        });
+        return true;
+    }
+
     async tip(amount) {
         const addedCredit = await Credit.create({
             description: 'Tip from user',
