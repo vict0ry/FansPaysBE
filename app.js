@@ -9,7 +9,12 @@ const session = require("express-session");
 const stripe = require("stripe")('sk_test_51LHjpdEZZiK54waal5CeD2qHjc9P5LV7sUqFgUsJ8Vi8EwSkNzGD1XQBEVPCxcKcgabBa8WxdUmWryAs6evDl0Ra00vjb96Cqe');
 
 const server = app.listen(port, () => console.log("Server listening on port " + port));
-const io = require("socket.io")(server, {pingTimeout: 60000});
+const io = require("socket.io")(server, {
+    pingTimeout: 60000,
+    cors: {
+        origin: '*',
+    }
+});
 
 app.set("view engine", "pug");
 app.set("views", "views");
@@ -77,13 +82,33 @@ app.use("/api/comments", middleware.requireLogin, commentsApiRoute);
 app.use('/api/stripe', middleware.requireLogin, stripeApiRoute);
 app.use('/validations', validationsRoute);
 
+const users = [];
 
 io.on("connection", socket => {
-
     socket.on("setup", userData => {
-        socket.join(userData._id);
-        socket.emit("connected");
-    })
+        const existUser = users.map(i => i.userId).indexOf(userData._id);
+        if (existUser >= 0) {
+            users[existUser].socketId = socket.id;
+        } else {
+            users.push({
+                socketId: socket.id,
+                userId: userData._id
+            });
+            socket.join(userData._id);
+        }
+        socket.emit("connected", socket.id);
+    });
+    socket.on('disconnect',() => {
+        for(let i=0; i < users.length; i++) {
+
+            if(users[i].id === socket.id){
+                users.splice(i,1);
+            }
+        }
+        io.emit('exit', users);
+        console.log(users);
+    });
+
 
     socket.on("join room", room => {
         console.log('room joined: ', room);
@@ -95,6 +120,18 @@ io.on("connection", socket => {
         console.log('room number chachachas: ', room);
         return socket.in(room).emit("notification received");
     });
+
+    socket.on("message_sent", data => {
+        console.log('message_sent:!!', data)
+        console.log('users ', users);
+        const foundUser = users.find(user => user.userId === data.userId);
+        console.log('foundUser : ', foundUser);
+        if (foundUser) {
+            console.log('no aspon tady..')
+            console.log('sent to : ', foundUser.socketId);
+            socket.to(foundUser.socketId).emit('sendMsg', data);
+        }
+    })
 
     socket.on("new message", newMessage => {
         const chat = newMessage.chat;
